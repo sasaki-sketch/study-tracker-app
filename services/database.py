@@ -27,7 +27,7 @@ class DatabaseService:
                 cursor = conn.cursor()
                 # ... database operations
         """
-        conn = sqlite3.connect(self.db_path)
+        conn = sqlite3.connect(self.db_path, check_same_thread=False, timeout=30.0)
         conn.row_factory = sqlite3.Row
         try:
             yield conn
