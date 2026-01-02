@@ -1,0 +1,20 @@
+# Add these imports at the top after existing imports:
+from components.roadmap import show_roadmap, show_goal_vs_actual
+from components.subjects import show_subject_progress_by_category
+
+# In show_dashboard() function, after the achievement banner, add:
+
+    st.divider()
+
+    # ロードマップ
+    show_roadmap()
+
+    st.divider()
+
+    # 目標vs実績グラフ
+    show_goal_vs_actual(stats)
+
+    st.divider()
+
+# Replace the existing科目別進捗 section with:
+    show_subject_progress_by_category(st.session_state.db_service, all_records)

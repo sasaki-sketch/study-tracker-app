@@ -1,0 +1,15 @@
+[Unit]
+Description=Study App Streamlit Service
+After=network.target
+
+[Service]
+Type=simple
+User=your-username
+WorkingDirectory=/home/your-username/study_app
+Environment="PATH=/home/your-username/study_app/venv/bin:/usr/local/bin:/usr/bin:/bin"
+ExecStart=/home/your-username/study_app/venv/bin/streamlit run app_v3.py --server.address=0.0.0.0 --server.port=8501 --server.headless=true
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
