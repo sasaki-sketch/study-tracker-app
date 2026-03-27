@@ -1,0 +1,100 @@
+{
+  "book": {
+    "title": "フレームワークを使いこなすための50問",
+    "author": "牧田幸裕",
+    "short_name": "fw50",
+    "course": "Marketing Management",
+    "course_code": "mm",
+    "total_questions": 50
+  },
+  "deck_prefix": "NUCB_EMBA::Marketing_Management::フレームワーク50問",
+  "model_id_base": 1774612721,
+  "deck_id_base": 2774612721,
+  "chapters": [
+    {
+      "number": 1,
+      "title": "なぜ経営戦略は機能しないのか？",
+      "deck_suffix": "Part1_経営戦略",
+      "questions": [
+        {"id": "ch1q01", "text": "なぜ経営戦略は機能しないのか？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch1q02", "text": "なぜフレームワークを正しく使えないのか？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch1q03", "text": "経営戦略はどういう構造にわけられ、どういうプロセスを経て策定されるのか？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch1q04", "text": "全社戦略ではどのようなフレームワークを使って何を策定するのか？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch1q05", "text": "BCG-PPMは、なぜ全社戦略の策定でのみ使われるのか？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch1q06", "text": "BCG-PPMの縦軸と横軸は何を意味しているのか？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch1q07", "text": "BCG-PPMのそれぞれの象限の事業の特徴は何か？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch1q08", "text": "BCG-PPMの間違った使い方、また、使ってはいけない場合とはどういうものか？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch1q09", "text": "全社戦略や事業戦略は必ず策定しなければならないのか？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch1q10", "text": "組織は戦略に従う、戦略は組織に従う、どちらが正しいのだろうか？", "status": "not_started", "completed_at": null, "script_file": null}
+      ]
+    },
+    {
+      "number": 2,
+      "title": "なぜ現状分析は機能しないのか？",
+      "deck_suffix": "Part2_現状分析",
+      "questions": [
+        {"id": "ch2q01", "text": "情報収集と現状分析の違いは何か？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch2q02", "text": "なぜ多くの日本企業の現状分析は「分析」にならないのか？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch2q03", "text": "現状分析のフレームワークにはどのようなものがあり、一番大きな枠組みは何か？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch2q04", "text": "3つのCをどういう順番で分析し、何を明らかにすればよいのか？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch2q05", "text": "SWOT分析では、それぞれの要素をどういう順番で分析したらよいのか？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch2q06", "text": "市場分析を行う目的は何か？その要素をどのフレームワークで分析すべきか？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch2q07", "text": "マクロ環境分析で明らかにしたいことは何で、それぞれどのタイミングで必要となるのか？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch2q08", "text": "5Fs分析で明らかにしたいことは何で、どのタイミングで必要となるのか？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch2q09", "text": "顧客分析で明らかにしたいことは何で、どのタイミングで必要となるのか？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch2q10", "text": "競合分析はどのようなプロセスで行われるのか？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch2q11", "text": "バリューチェーン分析で明らかにしたいことは何で、どのタイミングで必要となるのか？", "status": "not_started", "completed_at": null, "script_file": null}
+      ]
+    },
+    {
+      "number": 3,
+      "title": "なぜ戦略策定は機能しないのか？",
+      "deck_suffix": "Part3_戦略策定",
+      "questions": [
+        {"id": "ch3q01", "text": "なぜ戦略策定は機能しないのか？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch3q02", "text": "戦略策定のパターンはどれだけ存在するのか？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch3q03", "text": "コストリーダーシップを探るべき企業はどういう企業か？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch3q04", "text": "コストリーダーシップと低価格戦略は同じなのか？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch3q05", "text": "差別化や集中を採るべき企業はどういう企業か？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch3q06", "text": "差別化も集中も特定市場をターゲットとしているように見える。その違いは何なのか？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch3q07", "text": "なぜ差別化は機能しないのか？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch3q08", "text": "コストリーダーシップと差別化は両立できないのか？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch3q09", "text": "コトラーのリーダー企業とポーターのコストリーダー企業はどのような戦略を探るべきか？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch3q10", "text": "業界2位企業はチャレンジャーなのか？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch3q11", "text": "チャレンジャーと差別化は同じなのか？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch3q12", "text": "フォロワーとはどういう企業で、フォロワーで成功するにはどうしたらよいのか？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch3q13", "text": "ニッチャーと集中を採用する企業は同じなのか？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch3q14", "text": "戦略を機能させるためにポーターやコトラーをどう活かせばよいのか？", "status": "not_started", "completed_at": null, "script_file": null}
+      ]
+    },
+    {
+      "number": 4,
+      "title": "なぜ中期経営計画は計画どおりに実行されないのか？",
+      "deck_suffix": "Part4_中期経営計画",
+      "questions": [
+        {"id": "ch4q01", "text": "中期経営計画には、どのような構成要素（コンテンツ）が必要となるのか？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch4q02", "text": "中期経営計画にはなぜ利益拡大と成長の要素を入れなければならないのか？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch4q03", "text": "中期経営計画が「えいや！」と「気合」で作られてしまうのはなぜか？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch4q04", "text": "中期経営計画の目標と実現施策はなぜ乖離しがちなのか？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch4q05", "text": "経営企画部が出す施策に、どうして現場はヤル気をなくすのか？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch4q06", "text": "あきらめムードを蔓延させないよう、経営陣やマネジャーはどう動くべきか？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch4q07", "text": "WBSを策定する際のキモは何か？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch4q08", "text": "WBSの実行管理、効果検証はどのように行ったらよいのか？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch4q09", "text": "実行施策を現場で継続させるにはどうしたらよいのか？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch4q10", "text": "実行結果を経営陣やマネジャーはどう評価し、どう次のアクションに結びつけたらよいのか？", "status": "not_started", "completed_at": null, "script_file": null}
+      ]
+    },
+    {
+      "number": 5,
+      "title": "経営戦略を機能させるための必須スキル",
+      "deck_suffix": "Part5_必須スキル",
+      "questions": [
+        {"id": "ch5q01", "text": "戦略立案担当者が戦略を機能させるために必要なスキルは何か？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch5q02", "text": "事業成功のキモを発見するには、どのようなトレーニングを行えばよいのか？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch5q03", "text": "仮説思考力を強化するには、どのようなトレーニングを行えばよいのか？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch5q04", "text": "「策定」された戦略を「現場」に落とし込んで実行してもらうためにはどうしたらよいのか？", "status": "not_started", "completed_at": null, "script_file": null},
+        {"id": "ch5q05", "text": "戦略立案担当者はどうすれば戦略を機能させ続けられるのか？", "status": "not_started", "completed_at": null, "script_file": null}
+      ]
+    }
+  ]
+}

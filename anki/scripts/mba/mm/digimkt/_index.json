@@ -1,0 +1,45 @@
+{
+  "book": {
+    "title": "デジタルマーケティングの教科書 データ資本主義時代の流通小売戦略",
+    "author": "牧田幸裕",
+    "short_name": "digimkt",
+    "course": "Marketing Management",
+    "course_code": "mm",
+    "total_questions": 0
+  },
+  "deck_prefix": "NUCB_EMBA::Marketing_Management::デジタルMKTの教科書",
+  "model_id_base": 1702020100,
+  "deck_id_base": 2702020100,
+  "chapters": [
+    {
+      "number": 1,
+      "title": "流通小売業のDXはどう進めればよいのか",
+      "deck_suffix": "Ch1_DX推進",
+      "questions": []
+    },
+    {
+      "number": 2,
+      "title": "流通小売業の歴史と進化を振り返る",
+      "deck_suffix": "Ch2_歴史と進化",
+      "questions": []
+    },
+    {
+      "number": 3,
+      "title": "データ資本主義時代のビジネスモデルの作り方",
+      "deck_suffix": "Ch3_ビジネスモデル",
+      "questions": []
+    },
+    {
+      "number": 4,
+      "title": "新たなビジネスモデルを推進できる人材",
+      "deck_suffix": "Ch4_DX人材",
+      "questions": []
+    },
+    {
+      "number": 5,
+      "title": "消費者から見た次世代流通小売業",
+      "deck_suffix": "Ch5_次世代小売",
+      "questions": []
+    }
+  ]
+}
