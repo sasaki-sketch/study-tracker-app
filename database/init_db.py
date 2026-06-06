@@ -51,26 +51,39 @@ def init_database():
     ''')
 
     # 科目マスタの初期データ (名前, 略称, カテゴリ, 目標時間, 基礎学習時間, 完了)
+    # config/subjects.pyと一致させる（中点あり）
     subjects = [
         # 1次試験科目
-        ('財務会計', '財務', '1次試験', 90, 20, 0),
-        ('企業経営理論', '企業経営', '1次試験', 90, 15, 0),
-        ('運営管理', '運営', '1次試験', 90, 10, 0),
-        ('経済学', '経済', '1次試験', 90, 25, 0),
-        ('経営情報システム', '情報', '1次試験', 90, 10, 0),
-        ('経営法務', '法務', '1次試験', 90, 15, 0),
-        ('中小企業経営政策', '中小', '1次試験', 90, 10, 0),
+        ('財務・会計', '財務', '1次試験', 100, 0, 0),
+        ('企業経営理論', '企業経営', '1次試験', 90, 0, 0),
+        ('運営管理', '運営', '1次試験', 80, 0, 0),
+        ('経済学・経済政策', '経済', '1次試験', 90, 0, 0),
+        ('経営情報システム', '情報', '1次試験', 70, 0, 0),
+        ('経営法務', '法務', '1次試験', 70, 0, 0),
+        ('中小企業経営・政策', '中小', '1次試験', 100, 0, 0),
         # 2次試験科目
-        ('事例I（組織・人事）', '事例I', '2次試験', 60, 0, 0),
-        ('事例II（マーケティング）', '事例II', '2次試験', 60, 0, 0),
-        ('事例III（生産・技術）', '事例III', '2次試験', 60, 0, 0),
-        ('事例IV（財務）', '事例IV', '2次試験', 60, 0, 0),
+        ('事例I（組織・人事）', '事例I', '2次試験', 50, 0, 0),
+        ('事例II（マーケティング）', '事例II', '2次試験', 50, 0, 0),
+        ('事例III（生産・技術）', '事例III', '2次試験', 50, 0, 0),
+        ('事例IV（財務）', '事例IV', '2次試験', 50, 0, 0),
     ]
 
-    cursor.executemany('''
-        INSERT OR IGNORE INTO subjects (name, abbreviation, category, target_hours, baseline_hours, completed)
-        VALUES (?, ?, ?, ?, ?, ?)
-    ''', subjects)
+    # INSERT OR IGNORE: 既存レコードは上書きしない（target_hoursを保護）
+    for subject in subjects:
+        cursor.execute('''
+            INSERT INTO subjects (name, abbreviation, category, target_hours, baseline_hours, completed)
+            VALUES (?, ?, ?, ?, ?, ?)
+            ON CONFLICT(name) DO UPDATE SET
+                abbreviation = excluded.abbreviation
+        ''', subject)
+
+    # マイグレーションSQL実行
+    migration_file = Path(__file__).parent / "migrations" / "001_add_events.sql"
+    if migration_file.exists():
+        with open(migration_file, 'r', encoding='utf-8') as f:
+            migration_sql = f.read()
+            cursor.executescript(migration_sql)
+        print(f"✅ マイグレーション実行完了: {migration_file.name}")
 
     conn.commit()
     conn.close()

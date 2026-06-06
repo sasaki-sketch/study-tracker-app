@@ -1,0 +1,114 @@
+[
+  {
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_014AwTNMB1TJqyhKpgrDVKQ3",
+    "session_id": "374ce08a-c0fc-4edb-8ff6-4f3ac1827b2f",
+    "hook_event_name": "PostToolUse",
+    "is_mcp_tool": false
+  },
+  {
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_015MjEgsW8yembn1ToS26AJD",
+    "session_id": "374ce08a-c0fc-4edb-8ff6-4f3ac1827b2f",
+    "hook_event_name": "PostToolUse",
+    "is_mcp_tool": false
+  },
+  {
+    "tool_name": "Edit",
+    "tool_use_id": "toolu_017g7dNDjbCo6avMqdvMrfod",
+    "session_id": "374ce08a-c0fc-4edb-8ff6-4f3ac1827b2f",
+    "hook_event_name": "PostToolUse",
+    "is_mcp_tool": false
+  },
+  {
+    "tool_name": "AskUserQuestion",
+    "tool_use_id": "toolu_01XDt3y2WeXWvWP1jMHft4oM",
+    "session_id": "374ce08a-c0fc-4edb-8ff6-4f3ac1827b2f",
+    "hook_event_name": "PostToolUse",
+    "is_mcp_tool": false
+  },
+  {
+    "tool_name": "AskUserQuestion",
+    "tool_use_id": "toolu_01TL7pXSLtST6RZdzwm2UqJc",
+    "session_id": "374ce08a-c0fc-4edb-8ff6-4f3ac1827b2f",
+    "hook_event_name": "PostToolUse",
+    "is_mcp_tool": false
+  },
+  {
+    "tool_name": "AskUserQuestion",
+    "tool_use_id": "toolu_01Y5UuwwgmV5gahLZndLbrhp",
+    "session_id": "374ce08a-c0fc-4edb-8ff6-4f3ac1827b2f",
+    "hook_event_name": "PostToolUse",
+    "is_mcp_tool": false
+  },
+  {
+    "tool_name": "Write",
+    "tool_use_id": "toolu_01TevhppkeMzhJmjnhkZQQez",
+    "session_id": "374ce08a-c0fc-4edb-8ff6-4f3ac1827b2f",
+    "hook_event_name": "PostToolUse",
+    "is_mcp_tool": false
+  },
+  {
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01V53AKB9Y2uAoAbFGRwKWsD",
+    "session_id": "374ce08a-c0fc-4edb-8ff6-4f3ac1827b2f",
+    "hook_event_name": "PostToolUse",
+    "is_mcp_tool": false
+  },
+  {
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01X2CmE1E9YZK3ESMhREkGwV",
+    "session_id": "374ce08a-c0fc-4edb-8ff6-4f3ac1827b2f",
+    "hook_event_name": "PostToolUse",
+    "is_mcp_tool": false
+  },
+  {
+    "tool_name": "Edit",
+    "tool_use_id": "toolu_01LceyqM4VbxsohL4bJYukqc",
+    "session_id": "374ce08a-c0fc-4edb-8ff6-4f3ac1827b2f",
+    "hook_event_name": "PostToolUse",
+    "is_mcp_tool": false
+  },
+  {
+    "tool_name": "AskUserQuestion",
+    "tool_use_id": "toolu_01M4zRo41vkNTd5ZkZt2HJAj",
+    "session_id": "374ce08a-c0fc-4edb-8ff6-4f3ac1827b2f",
+    "hook_event_name": "PostToolUse",
+    "is_mcp_tool": false
+  },
+  {
+    "tool_name": "AskUserQuestion",
+    "tool_use_id": "toolu_01SfqUcBh57GYGkR6dCqXYXu",
+    "session_id": "374ce08a-c0fc-4edb-8ff6-4f3ac1827b2f",
+    "hook_event_name": "PostToolUse",
+    "is_mcp_tool": false
+  },
+  {
+    "tool_name": "Edit",
+    "tool_use_id": "toolu_01KssZVdB6hjnzbDE7mRBAZ1",
+    "session_id": "374ce08a-c0fc-4edb-8ff6-4f3ac1827b2f",
+    "hook_event_name": "PostToolUse",
+    "is_mcp_tool": false
+  },
+  {
+    "tool_name": "AskUserQuestion",
+    "tool_use_id": "toolu_01BybSGzYFpsuGAN62SCMcu9",
+    "session_id": "374ce08a-c0fc-4edb-8ff6-4f3ac1827b2f",
+    "hook_event_name": "PostToolUse",
+    "is_mcp_tool": false
+  },
+  {
+    "tool_name": "Read",
+    "tool_use_id": "toolu_019Doi2UfjLgTYoeswrk24TT",
+    "session_id": "374ce08a-c0fc-4edb-8ff6-4f3ac1827b2f",
+    "hook_event_name": "PostToolUse",
+    "is_mcp_tool": false
+  },
+  {
+    "tool_name": "Edit",
+    "tool_use_id": "toolu_01SboAcgz3iXoQBRxVzZyhFQ",
+    "session_id": "374ce08a-c0fc-4edb-8ff6-4f3ac1827b2f",
+    "hook_event_name": "PostToolUse",
+    "is_mcp_tool": false
+  }
+]

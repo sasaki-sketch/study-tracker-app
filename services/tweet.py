@@ -1,10 +1,16 @@
 """
-X投稿文生成サービス
+X投稿文生成サービス（レガシー + 新プロンプトベース統合）
 """
 import random
-from models.record import StudyRecord, CumulativeStats
+from typing import List
+from models.record import StudyRecord, CumulativeStats, StudySession
 from datetime import datetime, date
 from utils.subjects import SUBJECT_EMOJI_MAP
+from utils.tweet_prompts import (
+    generate_tweet_prompt_from_sessions,
+    generate_tweet_prompt_legacy,
+    generate_tweet_text_from_prompt
+)
 
 # 学習開始日（Day番号計算用）
 STUDY_START_DATE = date(2025, 10, 12)  # 最初の記録日
@@ -62,102 +68,33 @@ class TweetService:
 
     @staticmethod
     def generate_daily_tweet(record: StudyRecord, stats: CumulativeStats) -> str:
-        """日次投稿文を生成（140文字制限対応）"""
-        lines = []
+        """日次投稿文を生成（レガシー互換 - 簡略版）
 
-        # Day番号を計算
-        day_num = TweetService._calculate_day_number(record.date)
+        注意: この関数は後方互換性のために残していますが、
+        新しいコードでは generate_tweet_prompt_legacy() を使用してください。
+        """
+        # レガシープロンプトを生成して投稿文に変換
+        prompt = generate_tweet_prompt_legacy(record, stats)
+        return generate_tweet_text_from_prompt(prompt)
 
-        # 日付フォーマット（例: 1月3日）
-        date_str = f"{record.date.month}月{record.date.day}日"
+    @staticmethod
+    def generate_daily_tweet_from_sessions(
+        record: StudyRecord,
+        stats: CumulativeStats,
+        sessions: List[StudySession]
+    ) -> str:
+        """日次投稿文を生成（複数科目対応版）
 
-        # タイトル（【】なし、：使用）
-        lines.append(f"{date_str} / Day {day_num}：中小企業診断士への積み上げ")
-        lines.append("")
+        Args:
+            record: 学習記録
+            stats: 累計統計
+            sessions: 学習セッションリスト
 
-        # 両方学習した場合
-        if record.shindan_time > 0 and record.toukei_time > 0:
-            # 診断士
-            emoji = TweetService._get_subject_emoji(record.shindan_subject)
-            lines.append(f"{emoji} {record.shindan_subject} {record.shindan_time}h")
-
-            # 統計検定
-            lines.append(f"📊 統計検定 {record.toukei_time}h")
-
-            # 気づき（簡潔に）
-            if record.shindan_issue and record.shindan_issue.strip():
-                issue = record.shindan_issue.strip().replace('\n', '、')
-                # 20文字以内に収める
-                if len(issue) > 20:
-                    issue = issue[:17] + "..."
-                lines.append(f"💡{issue}")
-
-            lines.append("")
-            lines.append(f"累計 {stats.shindan_total}h/{stats.shindan_goal}h")
-
-        # 診断士のみ
-        elif record.shindan_time > 0:
-            emoji = TweetService._get_subject_emoji(record.shindan_subject)
-            subject_text = record.shindan_subject if record.shindan_subject else "診断士学習"
-            lines.append(f"{emoji} {subject_text} {record.shindan_time}h")
-
-            # 学習内容を簡潔に表示（contentから、長すぎる場合は省略）
-            if record.shindan_content and record.shindan_content.strip():
-                content = record.shindan_content.strip().replace('\n', '、')
-                # 30文字以内に収める
-                if len(content) > 30:
-                    content = content[:27] + "..."
-                lines.append(f"└ {content}")
-
-            # 気づき（issueがある場合）
-            if record.shindan_issue and record.shindan_issue.strip():
-                issue = record.shindan_issue.strip().replace('\n', '、')
-                # 20文字以内に収める
-                if len(issue) > 20:
-                    issue = issue[:17] + "..."
-                lines.append(f"💡{issue}")
-
-            lines.append("")
-            lines.append(f"累計 {stats.shindan_total}h/{stats.shindan_goal}h")
-
-        # 統計検定のみ
-        elif record.toukei_time > 0:
-            lines.append(f"📊 統計検定2級 {record.toukei_time}h")
-
-            # 学習内容（簡潔に）
-            if record.toukei_content and record.toukei_content.strip():
-                content = record.toukei_content.strip().replace('\n', '、')
-                # 30文字以内に収める
-                if len(content) > 30:
-                    content = content[:27] + "..."
-                lines.append(f"└ {content}")
-
-            # 気づき（issueがある場合）
-            if record.toukei_issue and record.toukei_issue.strip():
-                issue = record.toukei_issue.strip().replace('\n', '、')
-                # 20文字以内に収める
-                if len(issue) > 20:
-                    issue = issue[:17] + "..."
-                lines.append(f"💡{issue}")
-
-            lines.append("")
-            lines.append(f"累計 {stats.toukei_total}h/{stats.toukei_goal}h")
-
-        lines.append("")
-
-        # ハッシュタグ（2-3個に抑える）
-        hashtags = []
-        if record.shindan_time > 0:
-            hashtags.append("#中小企業診断士")
-        if record.toukei_time > 0:
-            hashtags.append("#統計検定")
-
-        # 共通ハッシュタグ
-        hashtags.append("#勉強垢")
-
-        lines.append(" ".join(hashtags))
-
-        return "\n".join(lines)
+        Returns:
+            投稿文（【厳格な指示】部分を除く）
+        """
+        prompt = generate_tweet_prompt_from_sessions(record, stats, sessions)
+        return generate_tweet_text_from_prompt(prompt)
 
     @staticmethod
     def generate_weekly_tweet(
@@ -193,11 +130,6 @@ class TweetService:
             for subject, hours in sorted_subjects[:3]:
                 lines.append(f"  {subject}:{hours}h")
 
-            lines.append("")
-
-        # 統計検定2級セクション
-        if total_toukei > 0:
-            lines.append(f"★統計検定2級:{total_toukei}h")
             lines.append("")
 
         # コメント
@@ -264,11 +196,6 @@ class TweetService:
             for subject, hours in sorted_subjects:
                 lines.append(f"  {subject}:{hours}h")
 
-            lines.append("")
-
-        # 統計検定2級セクション
-        if total_toukei > 0:
-            lines.append(f"★統計検定2級:{total_toukei}h")
             lines.append("")
 
         # 達成・課題

@@ -1,0 +1,165 @@
+[
+  {
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01VMm11BeYf83M2yqfhQS4MS",
+    "session_id": "91039294-6212-434a-88e2-c85a98447ec2",
+    "hook_event_name": "PreToolUse",
+    "tool_summary": {
+      "tool_name": "Bash",
+      "command": "curl -s -X POST http://localhost:8765 -d '{\"action\":\"importPackage\",\"version\":6,\"params\":{\"path\":\"/Users/sasaki/02_Personal/anki/anki/scripts/mba/ctg/pf_az/mba_ctg_pf_az_all_verified.apkg\"}}'",
+      "description": "Import to Anki via AnkiConnect"
+    }
+  },
+  {
+    "tool_name": "ToolSearch",
+    "tool_use_id": "toolu_012ng1oi7kgPGWC1uEeEywwU",
+    "session_id": "91039294-6212-434a-88e2-c85a98447ec2",
+    "hook_event_name": "PreToolUse",
+    "tool_summary": {
+      "tool_name": "ToolSearch"
+    }
+  },
+  {
+    "tool_name": "WebFetch",
+    "tool_use_id": "toolu_016CvFGUG5zuKHF54PTovoCY",
+    "session_id": "91039294-6212-434a-88e2-c85a98447ec2",
+    "hook_event_name": "PreToolUse",
+    "tool_summary": {
+      "tool_name": "WebFetch",
+      "url": "https://mba.nucba.ac.jp/about-mba/mba-12368.html",
+      "prompt": "\u300c8\u3064\u306e\u8a13\u3048\u300d\u306b\u95a2\u9023\u3059\u308b\u3059\u3079\u3066\u306e\u30ea\u30f3\u30af\u30fb\u8a18\u4e8b\u306e\u30bf\u30a4\u30c8\u30eb\u30fbURL\u3092\u62bd\u51fa\u3057\u3066\u304f\u3060\u3055\u3044\u3002\u52a0\u85e4\u548c\u5f66\u5148\u751f\u306e Changing The GAME \u306e\u8b1b\u7fa9\u306b\u95a2\u9023\u3059\u308b\u30b7\u30ea\u30fc\u30ba\u8a18\u4e8b\u304c\u3042\u308b\u5834\u5408\u3001\u305d\u308c\u3089\u306e\u8a18\u4e8b\u306e\u4e00\u89a7\u3068\u5404\u8a18\u4e8b"
+    }
+  },
+  {
+    "tool_name": "WebFetch",
+    "tool_use_id": "toolu_01Low7NDiB4m2eCB7jdtfP5c",
+    "session_id": "91039294-6212-434a-88e2-c85a98447ec2",
+    "hook_event_name": "PreToolUse",
+    "tool_summary": {
+      "tool_name": "WebFetch",
+      "url": "https://mba.nucba.ac.jp/about-mba/mba-12368.html",
+      "prompt": "\u3053\u306e\u8a18\u4e8b\u306e\u300c\u2460\u306e\u8a13\u3048\u300d\u306f\u4f55\u304b\uff1f\u8a13\u3048\u306e\u540d\u524d\u3001\u5bfe\u5fdc\u3059\u308b\u6226\u7565\u6982\u5ff5\uff08\u30d7\u30e9\u30c3\u30c8\u30d5\u30a9\u30fc\u30e0\u6226\u7565\u7528\u8a9e\uff09\u3001\u5177\u4f53\u4f8b\u3001\u6559\u8a13\u306e\u8981\u70b9\u3092\u6b63\u78ba\u306b\u62bd\u51fa\u3057\u3066\u304f\u3060\u3055\u3044\u3002\u539f\u6587\u306e\u8868\u73fe\u3082\u3067\u304d\u308b\u3060\u3051\u6b8b\u3057\u3066\u304f\u3060\u3055\u3044\u3002"
+    }
+  },
+  {
+    "tool_name": "WebFetch",
+    "tool_use_id": "toolu_01C2ekmtqrVNdXQpfVdgxWdR",
+    "session_id": "91039294-6212-434a-88e2-c85a98447ec2",
+    "hook_event_name": "PreToolUse",
+    "tool_summary": {
+      "tool_name": "WebFetch",
+      "url": "https://mba.nucba.ac.jp/about-mba/mba-12394.html",
+      "prompt": "\u3053\u306e\u8a18\u4e8b\u306e\u300c\u2461\u306e\u8a13\u3048\u300d\u306f\u4f55\u304b\uff1f\u8a13\u3048\u306e\u540d\u524d\u3001\u5bfe\u5fdc\u3059\u308b\u6226\u7565\u6982\u5ff5\u3001\u5177\u4f53\u4f8b\u3001\u6559\u8a13\u306e\u8981\u70b9\u3092\u6b63\u78ba\u306b\u62bd\u51fa\u3057\u3066\u304f\u3060\u3055\u3044\u3002\u539f\u6587\u306e\u8868\u73fe\u3082\u3067\u304d\u308b\u3060\u3051\u6b8b\u3057\u3066\u304f\u3060\u3055\u3044\u3002"
+    }
+  },
+  {
+    "tool_name": "WebFetch",
+    "tool_use_id": "toolu_0113Td4UbfJyL71b6ZcQemwx",
+    "session_id": "91039294-6212-434a-88e2-c85a98447ec2",
+    "hook_event_name": "PreToolUse",
+    "tool_summary": {
+      "tool_name": "WebFetch",
+      "url": "https://mba.nucba.ac.jp/about-mba/mba-12443.html",
+      "prompt": "\u3053\u306e\u8a18\u4e8b\u306e\u300c\u2462\u306e\u8a13\u3048\u300d\u306f\u4f55\u304b\uff1f\u8a13\u3048\u306e\u540d\u524d\u3001\u5bfe\u5fdc\u3059\u308b\u6226\u7565\u6982\u5ff5\u3001\u5177\u4f53\u4f8b\u3001\u6559\u8a13\u306e\u8981\u70b9\u3092\u6b63\u78ba\u306b\u62bd\u51fa\u3057\u3066\u304f\u3060\u3055\u3044\u3002\u539f\u6587\u306e\u8868\u73fe\u3082\u3067\u304d\u308b\u3060\u3051\u6b8b\u3057\u3066\u304f\u3060\u3055\u3044\u3002"
+    }
+  },
+  {
+    "tool_name": "WebFetch",
+    "tool_use_id": "toolu_01GFi4dyAcuWsosHVv3tYESr",
+    "session_id": "91039294-6212-434a-88e2-c85a98447ec2",
+    "hook_event_name": "PreToolUse",
+    "tool_summary": {
+      "tool_name": "WebFetch",
+      "url": "https://mba.nucba.ac.jp/about-mba/mba-12462.html",
+      "prompt": "\u3053\u306e\u8a18\u4e8b\u306e\u300c\u2463\u306e\u8a13\u3048\u300d\u306f\u4f55\u304b\uff1f\u8a13\u3048\u306e\u540d\u524d\u3001\u5bfe\u5fdc\u3059\u308b\u6226\u7565\u6982\u5ff5\u3001\u5177\u4f53\u4f8b\u3001\u6559\u8a13\u306e\u8981\u70b9\u3092\u6b63\u78ba\u306b\u62bd\u51fa\u3057\u3066\u304f\u3060\u3055\u3044\u3002\u539f\u6587\u306e\u8868\u73fe\u3082\u3067\u304d\u308b\u3060\u3051\u6b8b\u3057\u3066\u304f\u3060\u3055\u3044\u3002"
+    }
+  },
+  {
+    "tool_name": "WebFetch",
+    "tool_use_id": "toolu_01BborW4UfARUqQcwwrXQLz9",
+    "session_id": "91039294-6212-434a-88e2-c85a98447ec2",
+    "hook_event_name": "PreToolUse",
+    "tool_summary": {
+      "tool_name": "WebFetch",
+      "url": "https://mba.nucba.ac.jp/about-mba/mba-12740.html",
+      "prompt": "\u3053\u306e\u8a18\u4e8b\u306e\u300c\u2464\u306e\u8a13\u3048\u300d\u306f\u4f55\u304b\uff1f\u8a13\u3048\u306e\u540d\u524d\u3001\u5bfe\u5fdc\u3059\u308b\u6226\u7565\u6982\u5ff5\u3001\u5177\u4f53\u4f8b\u3001\u6559\u8a13\u306e\u8981\u70b9\u3092\u6b63\u78ba\u306b\u62bd\u51fa\u3057\u3066\u304f\u3060\u3055\u3044\u3002\u539f\u6587\u306e\u8868\u73fe\u3082\u3067\u304d\u308b\u3060\u3051\u6b8b\u3057\u3066\u304f\u3060\u3055\u3044\u3002"
+    }
+  },
+  {
+    "tool_name": "WebFetch",
+    "tool_use_id": "toolu_017RfppCnrbeLBGaKgAmKXRt",
+    "session_id": "91039294-6212-434a-88e2-c85a98447ec2",
+    "hook_event_name": "PreToolUse",
+    "tool_summary": {
+      "tool_name": "WebFetch",
+      "url": "https://mba.nucba.ac.jp/about-mba/mba-12768.html",
+      "prompt": "\u3053\u306e\u8a18\u4e8b\u306e\u300c\u2465\u306e\u8a13\u3048\u300d\u306f\u4f55\u304b\uff1f\u8a13\u3048\u306e\u540d\u524d\u3001\u5bfe\u5fdc\u3059\u308b\u6226\u7565\u6982\u5ff5\u3001\u5177\u4f53\u4f8b\u3001\u6559\u8a13\u306e\u8981\u70b9\u3092\u6b63\u78ba\u306b\u62bd\u51fa\u3057\u3066\u304f\u3060\u3055\u3044\u3002\u539f\u6587\u306e\u8868\u73fe\u3082\u3067\u304d\u308b\u3060\u3051\u6b8b\u3057\u3066\u304f\u3060\u3055\u3044\u3002"
+    }
+  },
+  {
+    "tool_name": "WebFetch",
+    "tool_use_id": "toolu_01NixQYtV3kPB94gc6crbGFZ",
+    "session_id": "91039294-6212-434a-88e2-c85a98447ec2",
+    "hook_event_name": "PreToolUse",
+    "tool_summary": {
+      "tool_name": "WebFetch",
+      "url": "https://mba.nucba.ac.jp/about-mba/mba-12779.html",
+      "prompt": "\u3053\u306e\u8a18\u4e8b\u306e\u300c\u2466\u306e\u8a13\u3048\u300d\u306f\u4f55\u304b\uff1f\u8a13\u3048\u306e\u540d\u524d\u3001\u5bfe\u5fdc\u3059\u308b\u6226\u7565\u6982\u5ff5\u3001\u5177\u4f53\u4f8b\u3001\u6559\u8a13\u306e\u8981\u70b9\u3092\u6b63\u78ba\u306b\u62bd\u51fa\u3057\u3066\u304f\u3060\u3055\u3044\u3002\u539f\u6587\u306e\u8868\u73fe\u3082\u3067\u304d\u308b\u3060\u3051\u6b8b\u3057\u3066\u304f\u3060\u3055\u3044\u3002"
+    }
+  },
+  {
+    "tool_name": "WebFetch",
+    "tool_use_id": "toolu_01JYd8KCpFnJPPSjDjqtzqFN",
+    "session_id": "91039294-6212-434a-88e2-c85a98447ec2",
+    "hook_event_name": "PreToolUse",
+    "tool_summary": {
+      "tool_name": "WebFetch",
+      "url": "https://mba.nucba.ac.jp/about-mba/mba-12786.html",
+      "prompt": "\u3053\u306e\u8a18\u4e8b\u306e\u300c\u2467\u306e\u8a13\u3048\u300d\u306f\u4f55\u304b\uff1f\u8a13\u3048\u306e\u540d\u524d\u3001\u5bfe\u5fdc\u3059\u308b\u6226\u7565\u6982\u5ff5\u3001\u5177\u4f53\u4f8b\u3001\u6559\u8a13\u306e\u8981\u70b9\u3092\u6b63\u78ba\u306b\u62bd\u51fa\u3057\u3066\u304f\u3060\u3055\u3044\u3002\u539f\u6587\u306e\u8868\u73fe\u3082\u3067\u304d\u308b\u3060\u3051\u6b8b\u3057\u3066\u304f\u3060\u3055\u3044\u3002"
+    }
+  },
+  {
+    "tool_name": "WebFetch",
+    "tool_use_id": "toolu_01Petrq7zzTyFea3GErYJPxu",
+    "session_id": "91039294-6212-434a-88e2-c85a98447ec2",
+    "hook_event_name": "PreToolUse",
+    "tool_summary": {
+      "tool_name": "WebFetch",
+      "url": "https://mba.nucba.ac.jp/about-mba/mba-12805.html",
+      "prompt": "\u3053\u306e\u8a18\u4e8b\u306e\u300c\u2468\u306e\u8a13\u3048\u300d\u306f\u4f55\u304b\uff1f\u8a13\u3048\u306e\u540d\u524d\u3001\u5bfe\u5fdc\u3059\u308b\u6226\u7565\u6982\u5ff5\u3001\u5177\u4f53\u4f8b\u3001\u6559\u8a13\u306e\u8981\u70b9\u3092\u6b63\u78ba\u306b\u62bd\u51fa\u3057\u3066\u304f\u3060\u3055\u3044\u3002\u539f\u6587\u306e\u8868\u73fe\u3082\u3067\u304d\u308b\u3060\u3051\u6b8b\u3057\u3066\u304f\u3060\u3055\u3044\u3002"
+    }
+  },
+  {
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01D5Bsnb4UAGP8E5CmHr6YqA",
+    "session_id": "91039294-6212-434a-88e2-c85a98447ec2",
+    "hook_event_name": "PreToolUse",
+    "tool_summary": {
+      "tool_name": "Bash",
+      "command": "mkdir -p /Users/sasaki/02_Personal/anki/anki/scripts/mba/ctg/8oshie",
+      "description": "Create folder"
+    }
+  },
+  {
+    "tool_name": "Write",
+    "tool_use_id": "toolu_01HE7vzsKjDudxALt9QzzSfa",
+    "session_id": "91039294-6212-434a-88e2-c85a98447ec2",
+    "hook_event_name": "PreToolUse",
+    "tool_summary": {
+      "tool_name": "Write",
+      "file_path": "/Users/sasaki/02_Personal/anki/anki/scripts/mba/ctg/8oshie/mba_ctg_8oshie_all_verified.py",
+      "content_length": 6450
+    }
+  },
+  {
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01SkqdNscJZQf2o3DsAWf1Bk",
+    "session_id": "91039294-6212-434a-88e2-c85a98447ec2",
+    "hook_event_name": "PreToolUse",
+    "tool_summary": {
+      "tool_name": "Bash",
+      "command": "cd /Users/sasaki/02_Personal/anki/anki/scripts/mba/ctg/8oshie/ && python3 mba_ctg_8oshie_all_verified.py && curl -s -X POST http://localhost:8765 -d '{\"action\":\"importPackage\",\"version\":6,\"params\":{\"p",
+      "description": "Generate apkg and import to Anki"
+    }
+  }
+]

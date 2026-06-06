@@ -1,0 +1,102 @@
+/* ギリシャ文字学習カード用スタイル */
+
+.card {
+    font-family: 'Hiragino Sans', 'Yu Gothic', 'Meiryo', sans-serif;
+    text-align: center;
+    padding: 20px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+/* 記号表示 */
+.symbol {
+    font-size: 72px;
+    color: #2c3e50;
+    margin: 20px 0;
+}
+
+/* 読み方 */
+.reading h2 {
+    font-size: 48px;
+    color: #3498db;
+    margin: 10px 0;
+}
+
+.english {
+    font-size: 24px;
+    color: #7f8c8d;
+    font-style: italic;
+}
+
+/* 質問スタイル */
+.question {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.question h3 {
+    font-size: 28px;
+    color: #2c3e50;
+}
+
+/* 回答スタイル */
+.answer {
+    text-align: left;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.meaning {
+    color: #e74c3c;
+    font-size: 20px;
+    border-bottom: 2px solid #e74c3c;
+    padding-bottom: 10px;
+}
+
+/* ニーモニック(記憶術) */
+.mnemonic {
+    background: #fff3cd;
+    border-left: 4px solid #ffc107;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 5px;
+}
+
+.mnemonic strong {
+    color: #856404;
+}
+
+/* 使用例 */
+.context {
+    background: #d1ecf1;
+    border-left: 4px solid #17a2b8;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 5px;
+}
+
+.context strong {
+    color: #0c5460;
+}
+
+/* 補足情報 */
+.info {
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 1px solid #ddd;
+    color: #6c757d;
+}
+
+.note {
+    font-size: 18px;
+    color: #6c757d;
+    margin: 10px 0;
+}
+
+.hint {
+    font-size: 16px;
+    color: #95a5a6;
+}

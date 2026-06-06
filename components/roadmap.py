@@ -247,28 +247,6 @@ def show_roadmap():
     )
 
     # 試験日マーカー
-    # 統計検定
-    fig.add_shape(
-        type="line",
-        x0=toukei_exam,
-        x1=toukei_exam,
-        y0=0,
-        y1=1,
-        line=dict(color="#4169E1", width=3, dash="solid")
-    )
-
-    fig.add_annotation(
-        x=toukei_exam,
-        y=-0.15,
-        text=f"<b>統計検定2級</b><br>{toukei_exam.strftime('%m/%d')}",
-        showarrow=False,
-        font=dict(size=11, color='white', family="Arial Black"),
-        bgcolor="#4169E1",
-        bordercolor='white',
-        borderwidth=2,
-        borderpad=5
-    )
-
     # 診断士1次試験
     fig.add_shape(
         type="line",
@@ -339,7 +317,7 @@ def show_roadmap():
         paper_bgcolor='rgba(0, 0, 0, 0)'
     )
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
 
     # 現在フェーズの詳細情報（コンパクトに）
     st.markdown("### 📅 現在のフェーズ")
@@ -455,58 +433,34 @@ def show_goal_vs_actual(stats, db_service):
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        # 診断士
-        shindan_rate = (stats.shindan_total / stats.shindan_goal * 100) if stats.shindan_goal > 0 else 0
-        color1, color2 = get_progress_color(shindan_rate)
-
-        # ステータスアイコン
-        if shindan_rate >= 80:
-            status_icon = "✅"
-            status_text = "順調"
-        elif shindan_rate >= 50:
-            status_icon = "⚠️"
-            status_text = "注意"
-        else:
-            status_icon = "🚨"
-            status_text = "要加速"
+        # 診断士1次試験
+        shindan_1ji_rate = (stats.shindan_1ji_total / stats.shindan_1ji_goal * 100) if stats.shindan_1ji_goal > 0 else 0
+        color1, color2 = get_progress_color(shindan_1ji_rate)
 
         st.markdown(f"""
         <div style="background: linear-gradient(135deg, {color1} 0%, {color2} 100%);
                     padding: 25px; border-radius: 15px; color: white; text-align: center;
                     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
                     height: 200px; display: flex; flex-direction: column; justify-content: center;">
-            <div style="font-size: 18px; margin-bottom: 8px; font-weight: 600;">中小企業診断士</div>
-            <div style="font-size: 42px; font-weight: bold; margin: 15px 0;">{shindan_rate:.1f}%</div>
-            <div style="font-size: 16px; opacity: 0.95; margin-bottom: 10px;">{stats.shindan_total:.1f}h / {stats.shindan_goal:.0f}h</div>
-            <div style="font-size: 14px; opacity: 0.9; margin-top: 8px;">{status_icon} {status_text}</div>
+            <div style="font-size: 16px; margin-bottom: 8px; font-weight: 600;">診断士1次試験</div>
+            <div style="font-size: 42px; font-weight: bold; margin: 15px 0;">{shindan_1ji_rate:.1f}%</div>
+            <div style="font-size: 14px; opacity: 0.95; margin-bottom: 10px;">{stats.shindan_1ji_total:.1f}h / {stats.shindan_1ji_goal:.0f}h</div>
         </div>
         """, unsafe_allow_html=True)
 
     with col2:
-        # 統計
-        toukei_rate = (stats.toukei_total / stats.toukei_goal * 100) if stats.toukei_goal > 0 else 0
-        color1, color2 = get_progress_color(toukei_rate)
-
-        # ステータスアイコン
-        if toukei_rate >= 80:
-            status_icon = "✅"
-            status_text = "順調"
-        elif toukei_rate >= 50:
-            status_icon = "⚠️"
-            status_text = "注意"
-        else:
-            status_icon = "🚨"
-            status_text = "要加速"
+        # 診断士2次試験
+        shindan_2ji_rate = (stats.shindan_2ji_total / stats.shindan_2ji_goal * 100) if stats.shindan_2ji_goal > 0 else 0
+        color1, color2 = get_progress_color(shindan_2ji_rate)
 
         st.markdown(f"""
         <div style="background: linear-gradient(135deg, {color1} 0%, {color2} 100%);
                     padding: 25px; border-radius: 15px; color: white; text-align: center;
                     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
                     height: 200px; display: flex; flex-direction: column; justify-content: center;">
-            <div style="font-size: 18px; margin-bottom: 8px; font-weight: 600;">統計検定2級</div>
-            <div style="font-size: 42px; font-weight: bold; margin: 15px 0;">{toukei_rate:.1f}%</div>
-            <div style="font-size: 16px; opacity: 0.95; margin-bottom: 10px;">{stats.toukei_total:.1f}h / {stats.toukei_goal:.0f}h</div>
-            <div style="font-size: 14px; opacity: 0.9; margin-top: 8px;">{status_icon} {status_text}</div>
+            <div style="font-size: 16px; margin-bottom: 8px; font-weight: 600;">診断士2次試験</div>
+            <div style="font-size: 42px; font-weight: bold; margin: 15px 0;">{shindan_2ji_rate:.1f}%</div>
+            <div style="font-size: 14px; opacity: 0.95; margin-bottom: 10px;">{stats.shindan_2ji_total:.1f}h / {stats.shindan_2ji_goal:.0f}h</div>
         </div>
         """, unsafe_allow_html=True)
 
@@ -520,8 +474,8 @@ def show_goal_vs_actual(stats, db_service):
                     padding: 25px; border-radius: 15px; color: white; text-align: center;
                     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
                     height: 200px; display: flex; flex-direction: column; justify-content: center;">
-            <div style="font-size: 18px; margin-bottom: 8px; font-weight: 600;">総学習時間</div>
+            <div style="font-size: 16px; margin-bottom: 8px; font-weight: 600;">総学習時間</div>
             <div style="font-size: 42px; font-weight: bold; margin: 15px 0;">{all_time_total:.0f}h</div>
-            <div style="font-size: 14px; opacity: 0.9;">過去{past_total}h + 現在{current_total:.1f}h</div>
+            <div style="font-size: 13px; opacity: 0.9;">2025年 {past_total}h + 2026年 {current_total:.1f}h</div>
         </div>
         """, unsafe_allow_html=True)

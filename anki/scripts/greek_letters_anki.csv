@@ -1,0 +1,721 @@
+Front	Back	Tags
+α	"<div class='reading'>
+<h2>アルファ</h2>
+<p class='english'>alpha</p>
+</div>"	greek-alphabet priority-S essential type-symbol-to-reading
+"<div class='question'>
+<h3>α の統計学での意味は?</h3>
+</div>"	"<div class='answer'>
+<h3 class='meaning'>第1種の過誤の確率、有意水準、回帰モデルの切片、クロンバックのアルファ</h3>
+
+<div class='mnemonic'>
+<strong>💡 記憶術:</strong>
+<p>アルファ = 'アタック基準' - 研究で仮説を攻撃的に棄却する閾値(通常5%)</p>
+</div>
+
+<div class='context'>
+<strong>📊 使用例:</strong>
+<p>α=0.05 は「5%の危険率で帰無仮説を棄却する」ことを意味する</p>
+</div>
+
+<div class='info'>
+<small>読み方: アルファ (alpha)</small>
+</div>
+</div>"	greek-alphabet priority-S essential type-meaning-with-mnemonic
+"<div class='question'>
+<h3>「アルファ」のギリシャ文字は?</h3>
+</div>"	"<div class='answer'>
+<h2 class='symbol'>α</h2>
+<p class='note'>大文字: Α</p>
+<p class='hint'>第1種の過誤の確率、有意水準、回帰モデルの切片、クロンバックのアルファ</p>
+</div>"	greek-alphabet priority-S essential type-reading-to-symbol
+β	"<div class='reading'>
+<h2>ベータ</h2>
+<p class='english'>beta</p>
+</div>"	greek-alphabet priority-S essential type-symbol-to-reading
+"<div class='question'>
+<h3>β の統計学での意味は?</h3>
+</div>"	"<div class='answer'>
+<h3 class='meaning'>ベータ関数(大文字)、第2種の過誤の確率、偏回帰係数</h3>
+
+<div class='mnemonic'>
+<strong>💡 記憶術:</strong>
+<p>ベータ = 'ベンリな係数' - 回帰分析で変数の影響力を示す / '2番目のエラー'</p>
+</div>
+
+<div class='context'>
+<strong>📊 使用例:</strong>
+<p>β₁ は説明変数が1単位増えたときの目的変数の変化量を表す</p>
+</div>
+
+<div class='info'>
+<small>読み方: ベータ (beta)</small>
+</div>
+</div>"	greek-alphabet priority-S essential type-meaning-with-mnemonic
+"<div class='question'>
+<h3>「ベータ」のギリシャ文字は?</h3>
+</div>"	"<div class='answer'>
+<h2 class='symbol'>β</h2>
+<p class='note'>大文字: Β</p>
+<p class='hint'>ベータ関数(大文字)、第2種の過誤の確率、偏回帰係数</p>
+</div>"	greek-alphabet priority-S essential type-reading-to-symbol
+γ	"<div class='reading'>
+<h2>ガンマ</h2>
+<p class='english'>gamma</p>
+</div>"	greek-alphabet priority-B type-symbol-to-reading
+"<div class='question'>
+<h3>γ の統計学での意味は?</h3>
+</div>"	"<div class='answer'>
+<h3 class='meaning'>ガンマ関数(大文字)、グッドマン=クラスカルのガンマ</h3>
+
+<div class='mnemonic'>
+<strong>💡 記憶術:</strong>
+<p>ガンマ = 'がっちり関連' - 順序変数間の関連性を測る統計量</p>
+</div>
+
+<div class='context'>
+<strong>📊 使用例:</strong>
+<p>γは-1から1の値を取り、順序関係の一致度を示す</p>
+</div>
+
+<div class='info'>
+<small>読み方: ガンマ (gamma)</small>
+</div>
+</div>"	greek-alphabet priority-B type-meaning-with-mnemonic
+"<div class='question'>
+<h3>「ガンマ」のギリシャ文字は?</h3>
+</div>"	"<div class='answer'>
+<h2 class='symbol'>γ</h2>
+<p class='note'>大文字: Γ</p>
+<p class='hint'>ガンマ関数(大文字)、グッドマン=クラスカルのガンマ</p>
+</div>"	greek-alphabet priority-B type-reading-to-symbol
+δ	"<div class='reading'>
+<h2>デルタ</h2>
+<p class='english'>delta</p>
+</div>"	greek-alphabet priority-B type-symbol-to-reading
+"<div class='question'>
+<h3>δ の統計学での意味は?</h3>
+</div>"	"<div class='answer'>
+<h3 class='meaning'>変化量(大文字)、差、変化量</h3>
+
+<div class='mnemonic'>
+<strong>💡 記憶術:</strong>
+<p>デルタ = 'デル(delete)前後の差' - Δx = 変化量、差分を表す記号</p>
+</div>
+
+<div class='context'>
+<strong>📊 使用例:</strong>
+<p>Δt は時間の変化量、δは微小な変化を表す</p>
+</div>
+
+<div class='info'>
+<small>読み方: デルタ (delta)</small>
+</div>
+</div>"	greek-alphabet priority-B type-meaning-with-mnemonic
+"<div class='question'>
+<h3>「デルタ」のギリシャ文字は?</h3>
+</div>"	"<div class='answer'>
+<h2 class='symbol'>δ</h2>
+<p class='note'>大文字: Δ</p>
+<p class='hint'>変化量(大文字)、差、変化量</p>
+</div>"	greek-alphabet priority-B type-reading-to-symbol
+ε	"<div class='reading'>
+<h2>イプシロン</h2>
+<p class='english'>epsilon</p>
+</div>"	greek-alphabet priority-B type-symbol-to-reading
+"<div class='question'>
+<h3>ε の統計学での意味は?</h3>
+</div>"	"<div class='answer'>
+<h3 class='meaning'>回帰モデルの誤差項</h3>
+
+<div class='mnemonic'>
+<strong>💡 記憶術:</strong>
+<p>イプシロン = 'いっぱいエラー' - 予測値と実測値のズレ(残差)</p>
+</div>
+
+<div class='context'>
+<strong>📊 使用例:</strong>
+<p>y = β₀ + β₁x + ε のεは説明できない誤差成分</p>
+</div>
+
+<div class='info'>
+<small>読み方: イプシロン (epsilon)</small>
+</div>
+</div>"	greek-alphabet priority-B type-meaning-with-mnemonic
+"<div class='question'>
+<h3>「イプシロン」のギリシャ文字は?</h3>
+</div>"	"<div class='answer'>
+<h2 class='symbol'>ε</h2>
+<p class='note'>大文字: Ε</p>
+<p class='hint'>回帰モデルの誤差項</p>
+</div>"	greek-alphabet priority-B type-reading-to-symbol
+ζ	"<div class='reading'>
+<h2>ツェータ</h2>
+<p class='english'>zeta</p>
+</div>"	greek-alphabet priority-C type-symbol-to-reading
+"<div class='question'>
+<h3>ζ の統計学での意味は?</h3>
+</div>"	"<div class='answer'>
+<h3 class='meaning'>(統計学では使用頻度低)</h3>
+
+<div class='mnemonic'>
+<strong>💡 記憶術:</strong>
+<p>ツェータ = 'Z音' - ラテン文字Zに対応するギリシャ文字</p>
+</div>
+
+<div class='context'>
+<strong>📊 使用例:</strong>
+<p>高度な数学や物理で使用されるが統計では稀</p>
+</div>
+
+<div class='info'>
+<small>読み方: ツェータ (zeta)</small>
+</div>
+</div>"	greek-alphabet priority-C type-meaning-with-mnemonic
+"<div class='question'>
+<h3>「ツェータ」のギリシャ文字は?</h3>
+</div>"	"<div class='answer'>
+<h2 class='symbol'>ζ</h2>
+<p class='note'>大文字: Ζ</p>
+<p class='hint'>(統計学では使用頻度低)</p>
+</div>"	greek-alphabet priority-C type-reading-to-symbol
+η	"<div class='reading'>
+<h2>イータ</h2>
+<p class='english'>eta</p>
+</div>"	greek-alphabet priority-B type-symbol-to-reading
+"<div class='question'>
+<h3>η の統計学での意味は?</h3>
+</div>"	"<div class='answer'>
+<h3 class='meaning'>相関比(η²)</h3>
+
+<div class='mnemonic'>
+<strong>💡 記憶術:</strong>
+<p>イータ = '良い(いい)相関' - 分散分析での効果量を示す指標</p>
+</div>
+
+<div class='context'>
+<strong>📊 使用例:</strong>
+<p>η²は全体の分散のうち要因で説明できる割合</p>
+</div>
+
+<div class='info'>
+<small>読み方: イータ (eta)</small>
+</div>
+</div>"	greek-alphabet priority-B type-meaning-with-mnemonic
+"<div class='question'>
+<h3>「イータ」のギリシャ文字は?</h3>
+</div>"	"<div class='answer'>
+<h2 class='symbol'>η</h2>
+<p class='note'>大文字: Η</p>
+<p class='hint'>相関比(η²)</p>
+</div>"	greek-alphabet priority-B type-reading-to-symbol
+θ	"<div class='reading'>
+<h2>シータ</h2>
+<p class='english'>theta</p>
+</div>"	greek-alphabet priority-A type-symbol-to-reading
+"<div class='question'>
+<h3>θ の統計学での意味は?</h3>
+</div>"	"<div class='answer'>
+<h3 class='meaning'>母数、定数、推定値</h3>
+
+<div class='mnemonic'>
+<strong>💡 記憶術:</strong>
+<p>シータ = '知らない値' - 未知の母数を一般的に表す記号</p>
+</div>
+
+<div class='context'>
+<strong>📊 使用例:</strong>
+<p>θ̂(シータハット)は母数θの推定値を意味する</p>
+</div>
+
+<div class='info'>
+<small>読み方: シータ (theta)</small>
+</div>
+</div>"	greek-alphabet priority-A type-meaning-with-mnemonic
+"<div class='question'>
+<h3>「シータ」のギリシャ文字は?</h3>
+</div>"	"<div class='answer'>
+<h2 class='symbol'>θ</h2>
+<p class='note'>大文字: Θ</p>
+<p class='hint'>母数、定数、推定値</p>
+</div>"	greek-alphabet priority-A type-reading-to-symbol
+ι	"<div class='reading'>
+<h2>イオタ</h2>
+<p class='english'>iota</p>
+</div>"	greek-alphabet priority-C type-symbol-to-reading
+"<div class='question'>
+<h3>ι の統計学での意味は?</h3>
+</div>"	"<div class='answer'>
+<h3 class='meaning'>(統計学では使用頻度低)</h3>
+
+<div class='mnemonic'>
+<strong>💡 記憶術:</strong>
+<p>イオタ = 'i(アイ)に似てる' - 英語iとほぼ同じ形</p>
+</div>
+
+<div class='context'>
+<strong>📊 使用例:</strong>
+<p>数学の添字などで使用されることがある</p>
+</div>
+
+<div class='info'>
+<small>読み方: イオタ (iota)</small>
+</div>
+</div>"	greek-alphabet priority-C type-meaning-with-mnemonic
+"<div class='question'>
+<h3>「イオタ」のギリシャ文字は?</h3>
+</div>"	"<div class='answer'>
+<h2 class='symbol'>ι</h2>
+<p class='note'>大文字: Ι</p>
+<p class='hint'>(統計学では使用頻度低)</p>
+</div>"	greek-alphabet priority-C type-reading-to-symbol
+κ	"<div class='reading'>
+<h2>カッパ</h2>
+<p class='english'>kappa</p>
+</div>"	greek-alphabet priority-B type-symbol-to-reading
+"<div class='question'>
+<h3>κ の統計学での意味は?</h3>
+</div>"	"<div class='answer'>
+<h3 class='meaning'>コーエンのカッパ係数</h3>
+
+<div class='mnemonic'>
+<strong>💡 記憶術:</strong>
+<p>カッパ = 'かぶり率チェック' - 評価者間の一致度を測る係数</p>
+</div>
+
+<div class='context'>
+<strong>📊 使用例:</strong>
+<p>κ=1なら完全一致、κ=0なら偶然一致と同程度</p>
+</div>
+
+<div class='info'>
+<small>読み方: カッパ (kappa)</small>
+</div>
+</div>"	greek-alphabet priority-B type-meaning-with-mnemonic
+"<div class='question'>
+<h3>「カッパ」のギリシャ文字は?</h3>
+</div>"	"<div class='answer'>
+<h2 class='symbol'>κ</h2>
+<p class='note'>大文字: Κ</p>
+<p class='hint'>コーエンのカッパ係数</p>
+</div>"	greek-alphabet priority-B type-reading-to-symbol
+λ	"<div class='reading'>
+<h2>ラムダ</h2>
+<p class='english'>lambda</p>
+</div>"	greek-alphabet priority-A type-symbol-to-reading
+"<div class='question'>
+<h3>λ の統計学での意味は?</h3>
+</div>"	"<div class='answer'>
+<h3 class='meaning'>ウィルクスのラムダ(大文字)、グッドマン=クラスカルのラムダ、ポアソン分布のパラメータ、固有値</h3>
+
+<div class='mnemonic'>
+<strong>💡 記憶術:</strong>
+<p>ラムダ = 'ランダム事象の率' - ポアソン分布で単位時間あたりの発生率</p>
+</div>
+
+<div class='context'>
+<strong>📊 使用例:</strong>
+<p>λ=3 なら平均して3回/単位時間で事象が起こる</p>
+</div>
+
+<div class='info'>
+<small>読み方: ラムダ (lambda)</small>
+</div>
+</div>"	greek-alphabet priority-A type-meaning-with-mnemonic
+"<div class='question'>
+<h3>「ラムダ」のギリシャ文字は?</h3>
+</div>"	"<div class='answer'>
+<h2 class='symbol'>λ</h2>
+<p class='note'>大文字: Λ</p>
+<p class='hint'>ウィルクスのラムダ(大文字)、グッドマン=クラスカルのラムダ、ポアソン分布のパラメータ、固有値</p>
+</div>"	greek-alphabet priority-A type-reading-to-symbol
+μ	"<div class='reading'>
+<h2>ミュー</h2>
+<p class='english'>mu</p>
+</div>"	greek-alphabet priority-S essential type-symbol-to-reading
+"<div class='question'>
+<h3>μ の統計学での意味は?</h3>
+</div>"	"<div class='answer'>
+<h3 class='meaning'>母平均</h3>
+
+<div class='mnemonic'>
+<strong>💡 記憶術:</strong>
+<p>ミュー = 'みんなの平均(Mean)' - 母集団全体の算術平均</p>
+</div>
+
+<div class='context'>
+<strong>📊 使用例:</strong>
+<p>標本平均x̄は母平均μの推定値として使われる</p>
+</div>
+
+<div class='info'>
+<small>読み方: ミュー (mu)</small>
+</div>
+</div>"	greek-alphabet priority-S essential type-meaning-with-mnemonic
+"<div class='question'>
+<h3>「ミュー」のギリシャ文字は?</h3>
+</div>"	"<div class='answer'>
+<h2 class='symbol'>μ</h2>
+<p class='note'>大文字: Μ</p>
+<p class='hint'>母平均</p>
+</div>"	greek-alphabet priority-S essential type-reading-to-symbol
+ν	"<div class='reading'>
+<h2>ニュー</h2>
+<p class='english'>nu</p>
+</div>"	greek-alphabet priority-A type-symbol-to-reading
+"<div class='question'>
+<h3>ν の統計学での意味は?</h3>
+</div>"	"<div class='answer'>
+<h3 class='meaning'>自由度</h3>
+
+<div class='mnemonic'>
+<strong>💡 記憶術:</strong>
+<p>ニュー = '新しい(new)計算の数' - t検定やχ²検定で必要な自由度</p>
+</div>
+
+<div class='context'>
+<strong>📊 使用例:</strong>
+<p>n個のデータでk個の制約があるとき自由度=n-k</p>
+</div>
+
+<div class='info'>
+<small>読み方: ニュー (nu)</small>
+</div>
+</div>"	greek-alphabet priority-A type-meaning-with-mnemonic
+"<div class='question'>
+<h3>「ニュー」のギリシャ文字は?</h3>
+</div>"	"<div class='answer'>
+<h2 class='symbol'>ν</h2>
+<p class='note'>大文字: Ν</p>
+<p class='hint'>自由度</p>
+</div>"	greek-alphabet priority-A type-reading-to-symbol
+ξ	"<div class='reading'>
+<h2>グザイ</h2>
+<p class='english'>xi</p>
+</div>"	greek-alphabet priority-C type-symbol-to-reading
+"<div class='question'>
+<h3>ξ の統計学での意味は?</h3>
+</div>"	"<div class='answer'>
+<h3 class='meaning'>(統計学では使用頻度低)</h3>
+
+<div class='mnemonic'>
+<strong>💡 記憶術:</strong>
+<p>グザイ = '具(ぐ)体性ない変数' - 特殊な文脈で使われる</p>
+</div>
+
+<div class='context'>
+<strong>📊 使用例:</strong>
+<p>確率過程や特性関数などの高度な分野で登場</p>
+</div>
+
+<div class='info'>
+<small>読み方: グザイ (xi)</small>
+</div>
+</div>"	greek-alphabet priority-C type-meaning-with-mnemonic
+"<div class='question'>
+<h3>「グザイ」のギリシャ文字は?</h3>
+</div>"	"<div class='answer'>
+<h2 class='symbol'>ξ</h2>
+<p class='note'>大文字: Ξ</p>
+<p class='hint'>(統計学では使用頻度低)</p>
+</div>"	greek-alphabet priority-C type-reading-to-symbol
+ο	"<div class='reading'>
+<h2>オミクロン</h2>
+<p class='english'>omicron</p>
+</div>"	greek-alphabet priority-C type-symbol-to-reading
+"<div class='question'>
+<h3>ο の統計学での意味は?</h3>
+</div>"	"<div class='answer'>
+<h3 class='meaning'>(統計学では使用頻度低)</h3>
+
+<div class='mnemonic'>
+<strong>💡 記憶術:</strong>
+<p>オミクロン = 'O(オー)と同じ' - 英語のOと区別がつかない</p>
+</div>
+
+<div class='context'>
+<strong>📊 使用例:</strong>
+<p>使用されることは極めて稀</p>
+</div>
+
+<div class='info'>
+<small>読み方: オミクロン (omicron)</small>
+</div>
+</div>"	greek-alphabet priority-C type-meaning-with-mnemonic
+"<div class='question'>
+<h3>「オミクロン」のギリシャ文字は?</h3>
+</div>"	"<div class='answer'>
+<h2 class='symbol'>ο</h2>
+<p class='note'>大文字: Ο</p>
+<p class='hint'>(統計学では使用頻度低)</p>
+</div>"	greek-alphabet priority-C type-reading-to-symbol
+π	"<div class='reading'>
+<h2>パイ</h2>
+<p class='english'>pi</p>
+</div>"	greek-alphabet priority-A type-symbol-to-reading
+"<div class='question'>
+<h3>π の統計学での意味は?</h3>
+</div>"	"<div class='answer'>
+<h3 class='meaning'>総乗(大文字)、円周率</h3>
+
+<div class='mnemonic'>
+<strong>💡 記憶術:</strong>
+<p>パイ = 'パイを割る(3.14...)' - 円周率 or 確率の積</p>
+</div>
+
+<div class='context'>
+<strong>📊 使用例:</strong>
+<p>統計では母比率や同時確率の計算で使用</p>
+</div>
+
+<div class='info'>
+<small>読み方: パイ (pi)</small>
+</div>
+</div>"	greek-alphabet priority-A type-meaning-with-mnemonic
+"<div class='question'>
+<h3>「パイ」のギリシャ文字は?</h3>
+</div>"	"<div class='answer'>
+<h2 class='symbol'>π</h2>
+<p class='note'>大文字: Π</p>
+<p class='hint'>総乗(大文字)、円周率</p>
+</div>"	greek-alphabet priority-A type-reading-to-symbol
+ρ	"<div class='reading'>
+<h2>ロー</h2>
+<p class='english'>rho</p>
+</div>"	greek-alphabet priority-S essential type-symbol-to-reading
+"<div class='question'>
+<h3>ρ の統計学での意味は?</h3>
+</div>"	"<div class='answer'>
+<h3 class='meaning'>相関係数</h3>
+
+<div class='mnemonic'>
+<strong>💡 記憶術:</strong>
+<p>ロー = 'ロープで結ぶ' - 2変数間の関連性の強さ(-1〜1)</p>
+</div>
+
+<div class='context'>
+<strong>📊 使用例:</strong>
+<p>ρ=0なら無相関、ρ=±1なら完全相関</p>
+</div>
+
+<div class='info'>
+<small>読み方: ロー (rho)</small>
+</div>
+</div>"	greek-alphabet priority-S essential type-meaning-with-mnemonic
+"<div class='question'>
+<h3>「ロー」のギリシャ文字は?</h3>
+</div>"	"<div class='answer'>
+<h2 class='symbol'>ρ</h2>
+<p class='note'>大文字: Ρ</p>
+<p class='hint'>相関係数</p>
+</div>"	greek-alphabet priority-S essential type-reading-to-symbol
+σ	"<div class='reading'>
+<h2>シグマ</h2>
+<p class='english'>sigma</p>
+</div>"	greek-alphabet priority-S essential type-symbol-to-reading
+"<div class='question'>
+<h3>σ の統計学での意味は?</h3>
+</div>"	"<div class='answer'>
+<h3 class='meaning'>総和(大文字)、母分散(σ²)、母標準偏差、分散共分散行列</h3>
+
+<div class='mnemonic'>
+<strong>💡 記憶術:</strong>
+<p>シグマ = 'しぐさ(散らばり)' - データのバラツキ度合いを表す</p>
+</div>
+
+<div class='context'>
+<strong>📊 使用例:</strong>
+<p>σ²は分散、σは標準偏差。Σは合計を表す</p>
+</div>
+
+<div class='info'>
+<small>読み方: シグマ (sigma)</small>
+</div>
+</div>"	greek-alphabet priority-S essential type-meaning-with-mnemonic
+"<div class='question'>
+<h3>「シグマ」のギリシャ文字は?</h3>
+</div>"	"<div class='answer'>
+<h2 class='symbol'>σ</h2>
+<p class='note'>大文字: Σ</p>
+<p class='hint'>総和(大文字)、母分散(σ²)、母標準偏差、分散共分散行列</p>
+</div>"	greek-alphabet priority-S essential type-reading-to-symbol
+τ	"<div class='reading'>
+<h2>タウ</h2>
+<p class='english'>tau</p>
+</div>"	greek-alphabet priority-B type-symbol-to-reading
+"<div class='question'>
+<h3>τ の統計学での意味は?</h3>
+</div>"	"<div class='answer'>
+<h3 class='meaning'>ケンドールのタウ、グッドマン=クラスカルのタウ</h3>
+
+<div class='mnemonic'>
+<strong>💡 記憶術:</strong>
+<p>タウ = 'たう(倒)れない順序関係' - 順位相関係数の一種</p>
+</div>
+
+<div class='context'>
+<strong>📊 使用例:</strong>
+<p>τは外れ値に強い順位相関の指標</p>
+</div>
+
+<div class='info'>
+<small>読み方: タウ (tau)</small>
+</div>
+</div>"	greek-alphabet priority-B type-meaning-with-mnemonic
+"<div class='question'>
+<h3>「タウ」のギリシャ文字は?</h3>
+</div>"	"<div class='answer'>
+<h2 class='symbol'>τ</h2>
+<p class='note'>大文字: Τ</p>
+<p class='hint'>ケンドールのタウ、グッドマン=クラスカルのタウ</p>
+</div>"	greek-alphabet priority-B type-reading-to-symbol
+υ	"<div class='reading'>
+<h2>ウプシロン</h2>
+<p class='english'>upsilon</p>
+</div>"	greek-alphabet priority-C type-symbol-to-reading
+"<div class='question'>
+<h3>υ の統計学での意味は?</h3>
+</div>"	"<div class='answer'>
+<h3 class='meaning'>(統計学では使用頻度低)</h3>
+
+<div class='mnemonic'>
+<strong>💡 記憶術:</strong>
+<p>ウプシロン = 'ウッと悩む文字' - 使用頻度が低い</p>
+</div>
+
+<div class='context'>
+<strong>📊 使用例:</strong>
+<p>物理学などで使用されるが統計では稀</p>
+</div>
+
+<div class='info'>
+<small>読み方: ウプシロン (upsilon)</small>
+</div>
+</div>"	greek-alphabet priority-C type-meaning-with-mnemonic
+"<div class='question'>
+<h3>「ウプシロン」のギリシャ文字は?</h3>
+</div>"	"<div class='answer'>
+<h2 class='symbol'>υ</h2>
+<p class='note'>大文字: Υ</p>
+<p class='hint'>(統計学では使用頻度低)</p>
+</div>"	greek-alphabet priority-C type-reading-to-symbol
+φ	"<div class='reading'>
+<h2>ファイ</h2>
+<p class='english'>phi</p>
+</div>"	greek-alphabet priority-A type-symbol-to-reading
+"<div class='question'>
+<h3>φ の統計学での意味は?</h3>
+</div>"	"<div class='answer'>
+<h3 class='meaning'>自由度、ファイ係数</h3>
+
+<div class='mnemonic'>
+<strong>💡 記憶術:</strong>
+<p>ファイ = 'ファイル(φ)で関連度を記録' - 2×2分割表の関連係数</p>
+</div>
+
+<div class='context'>
+<strong>📊 使用例:</strong>
+<p>φ係数はχ²統計量を標準化した値</p>
+</div>
+
+<div class='info'>
+<small>読み方: ファイ (phi)</small>
+</div>
+</div>"	greek-alphabet priority-A type-meaning-with-mnemonic
+"<div class='question'>
+<h3>「ファイ」のギリシャ文字は?</h3>
+</div>"	"<div class='answer'>
+<h2 class='symbol'>φ</h2>
+<p class='note'>大文字: Φ</p>
+<p class='hint'>自由度、ファイ係数</p>
+</div>"	greek-alphabet priority-A type-reading-to-symbol
+χ	"<div class='reading'>
+<h2>カイ</h2>
+<p class='english'>chi</p>
+</div>"	greek-alphabet priority-S essential type-symbol-to-reading
+"<div class='question'>
+<h3>χ の統計学での意味は?</h3>
+</div>"	"<div class='answer'>
+<h3 class='meaning'>カイ二乗分布の検定統計量(χ²)</h3>
+
+<div class='mnemonic'>
+<strong>💡 記憶術:</strong>
+<p>カイ = '怪しい(かいしい)差を検定' - カテゴリデータの独立性検定</p>
+</div>
+
+<div class='context'>
+<strong>📊 使用例:</strong>
+<p>χ²検定は観測度数と期待度数のズレを評価</p>
+</div>
+
+<div class='info'>
+<small>読み方: カイ (chi)</small>
+</div>
+</div>"	greek-alphabet priority-S essential type-meaning-with-mnemonic
+"<div class='question'>
+<h3>「カイ」のギリシャ文字は?</h3>
+</div>"	"<div class='answer'>
+<h2 class='symbol'>χ</h2>
+<p class='note'>大文字: Χ</p>
+<p class='hint'>カイ二乗分布の検定統計量(χ²)</p>
+</div>"	greek-alphabet priority-S essential type-reading-to-symbol
+ψ	"<div class='reading'>
+<h2>プサイ</h2>
+<p class='english'>psi</p>
+</div>"	greek-alphabet priority-C type-symbol-to-reading
+"<div class='question'>
+<h3>ψ の統計学での意味は?</h3>
+</div>"	"<div class='answer'>
+<h3 class='meaning'>対比(多重比較)</h3>
+
+<div class='mnemonic'>
+<strong>💡 記憶術:</strong>
+<p>プサイ = 'プッシュ(押す)して比較' - 分散分析後の特定比較</p>
+</div>
+
+<div class='context'>
+<strong>📊 使用例:</strong>
+<p>計画対比で特定の群間差を検定する</p>
+</div>
+
+<div class='info'>
+<small>読み方: プサイ (psi)</small>
+</div>
+</div>"	greek-alphabet priority-C type-meaning-with-mnemonic
+"<div class='question'>
+<h3>「プサイ」のギリシャ文字は?</h3>
+</div>"	"<div class='answer'>
+<h2 class='symbol'>ψ</h2>
+<p class='note'>大文字: Ψ</p>
+<p class='hint'>対比(多重比較)</p>
+</div>"	greek-alphabet priority-C type-reading-to-symbol
+ω	"<div class='reading'>
+<h2>オメガ</h2>
+<p class='english'>omega</p>
+</div>"	greek-alphabet priority-C type-symbol-to-reading
+"<div class='question'>
+<h3>ω の統計学での意味は?</h3>
+</div>"	"<div class='answer'>
+<h3 class='meaning'>根元事象、全事象</h3>
+
+<div class='mnemonic'>
+<strong>💡 記憶術:</strong>
+<p>オメガ = '終わり(omega)=全部' - 標本空間全体を表す</p>
+</div>
+
+<div class='context'>
+<strong>📊 使用例:</strong>
+<p>確率論でΩはすべての可能な結果の集合</p>
+</div>
+
+<div class='info'>
+<small>読み方: オメガ (omega)</small>
+</div>
+</div>"	greek-alphabet priority-C type-meaning-with-mnemonic
+"<div class='question'>
+<h3>「オメガ」のギリシャ文字は?</h3>
+</div>"	"<div class='answer'>
+<h2 class='symbol'>ω</h2>
+<p class='note'>大文字: Ω</p>
+<p class='hint'>根元事象、全事象</p>
+</div>"	greek-alphabet priority-C type-reading-to-symbol

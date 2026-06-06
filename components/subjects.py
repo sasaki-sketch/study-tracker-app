@@ -21,13 +21,16 @@ def show_subject_progress_by_category(db_service, all_records):
         ''')
         subjects_data = cursor.fetchall()
 
-    # 科目別の学習時間を集計
+    # 科目別の学習時間を集計（study_sessionsから）
     subject_hours = {}
     for record in all_records:
-        if record.shindan_subject and record.shindan_time > 0:
-            if record.shindan_subject not in subject_hours:
-                subject_hours[record.shindan_subject] = 0
-            subject_hours[record.shindan_subject] += record.shindan_time
+        if record.id:
+            sessions = db_service.get_study_sessions(record.id)
+            for session in sessions:
+                if session.qualification in ('shindan_1ji', 'shindan_2ji') and session.time_hours > 0:
+                    if session.subject not in subject_hours:
+                        subject_hours[session.subject] = 0
+                    subject_hours[session.subject] += session.time_hours
 
     # カテゴリ別に分類
     first_exam_subjects = []

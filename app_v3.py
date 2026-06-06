@@ -9,12 +9,20 @@ import pandas as pd
 from urllib.parse import quote
 
 from database.init_db import init_database
-from models.record import StudyRecord
+from models.record import StudyRecord, StudySession
 from services.database import DatabaseService
 from services.obsidian import ObsidianService
 from services.obsidian_sync import ObsidianSyncService
 from services.tweet import TweetService
 from utils.phase import get_current_phase
+from components.event_forms import (
+    render_past_exam_form,
+    show_recent_past_exams,
+    render_material_lap_form,
+    show_materials_list,
+    render_mock_exam_form,
+    show_recent_mock_exams
+)
 from utils.stats import (
     calculate_days_until_exam,
     calculate_required_daily_pace,
@@ -42,7 +50,7 @@ st.set_page_config(
     menu_items={
         'Get Help': None,
         'Report a bug': None,
-        'About': "# 診断士学習記録アプリ v3\n中小企業診断士・統計検定2級の学習進捗を管理するアプリです。"
+        'About': "# 診断士学習記録アプリ v3\n中小企業診断士の学習進捗を管理するアプリです。"
     }
 )
 
@@ -247,7 +255,7 @@ def main():
                 if st.button(
                     f"{date_label}\n{summary_text}",
                     key=f"tweet_{record.id}",
-                    use_container_width=True,
+                    width="stretch",
                     type="primary" if is_today else "secondary"
                 ):
                     st.session_state.selected_record = record
@@ -281,15 +289,25 @@ def main():
                 st.markdown(f"## 📱 {selected.date.strftime('%Y年%m月%d日')} ({selected.phase})")
             with col_close:
                 st.markdown("")  # 垂直方向の調整
-                if st.button("✕ 閉じる", key="close_tweet_display", type="secondary", use_container_width=True):
+                if st.button("✕ 閉じる", key="close_tweet_display", type="secondary", width="stretch"):
                     st.session_state.selected_record = None
                     st.rerun()
 
             st.markdown("---")
 
-            # 投稿文を生成
+            # 投稿文を生成（再生成された投稿文がある場合はそれを使用）
             stats = st.session_state.db_service.get_cumulative_stats()
-            tweet_text = TweetService.generate_daily_tweet(selected, stats)
+
+            # セッション状態キー
+            tweet_display_key = f"tweet_display_{selected.date.isoformat()}"
+
+            # 初期値設定（まだセッション状態にない場合）
+            if tweet_display_key not in st.session_state:
+                if selected.id:
+                    preview_sessions = st.session_state.db_service.get_study_sessions(selected.id)
+                    st.session_state[tweet_display_key] = TweetService.generate_daily_tweet_from_sessions(selected, stats, preview_sessions)
+                else:
+                    st.session_state[tweet_display_key] = TweetService.generate_daily_tweet(selected, stats)
 
             # 2カラムレイアウト
             col_preview, col_actions = st.columns([2, 1])
@@ -299,34 +317,34 @@ def main():
                 st.markdown("#### 📝 投稿文プレビュー")
                 st.text_area(
                     label="preview",
-                    value=tweet_text,
-                    height=280,
-                    key="history_tweet_display",
+                    height=500,
+                    key=tweet_display_key,
                     label_visibility="collapsed"
                 )
 
                 # 文字数カウント
-                show_char_counter(tweet_text)
+                show_char_counter(st.session_state[tweet_display_key])
 
             with col_actions:
                 # アクションエリア
                 st.markdown("#### 🎯 アクション")
 
                 # 主要アクション（大きく）
-                tweet_url = f"https://x.com/intent/tweet?text={quote(tweet_text)}"
+                current_tweet = st.session_state[tweet_display_key]
+                tweet_url = f"https://x.com/intent/tweet?text={quote(current_tweet)}"
                 st.link_button(
                     "🐦 Xで投稿する",
                     tweet_url,
-                    use_container_width=True,
+                    width="stretch",
                     type="primary"
                 )
 
                 st.markdown("")  # スペース
 
                 # 補助アクション
-                if st.button("📋 コピー", key="copy_history_tweet", use_container_width=True):
+                if st.button("📋 コピー", key="copy_history_tweet", width="stretch"):
                     try:
-                        pyperclip.copy(tweet_text)
+                        pyperclip.copy(current_tweet)
                         st.toast("✅ コピーしました！", icon="✅")
                     except pyperclip.PyperclipException:
                         st.error("⚠️ クリップボードへのアクセスに失敗しました")
@@ -334,35 +352,75 @@ def main():
                     except Exception as e:
                         st.error(f"⚠️ 予期しないエラー: {str(e)}")
 
-                if st.button("✨ Claude助言", key="claude_history_helper", use_container_width=True):
-                    helper_prompt = f"""以下の学習記録をもとに、SNS投稿用の文章を140文字以内で簡潔に整形してください：
+                # プロンプト生成（統一テンプレートを使用）
+                from utils.tweet_prompts import generate_tweet_prompt_from_sessions, generate_tweet_prompt_legacy
+                stats = st.session_state.db_service.get_cumulative_stats()
 
-【学習情報】
-日付: {selected.date.strftime('%Y年%m月%d日')}
-フェーズ: {selected.phase}
+                # セッション取得してプロンプト生成
+                if selected.id:
+                    history_sessions = st.session_state.db_service.get_study_sessions(selected.id)
+                    default_prompt = generate_tweet_prompt_from_sessions(selected, stats, history_sessions)
+                else:
+                    default_prompt = generate_tweet_prompt_legacy(selected, stats)
 
-診断士学習: {selected.shindan_time}h
-科目: {selected.shindan_subject}
-内容: {selected.shindan_content}
-気づき: {selected.shindan_issue}
+                # プロンプト編集エリア（展開可能）
+                with st.expander("📝 プロンプト確認・編集", expanded=False):
+                    edited_prompt = st.text_area(
+                        "プロンプトを編集できます",
+                        value=default_prompt,
+                        height=300,
+                        key="edited_prompt_history",
+                        help="プロンプトを編集してカスタマイズできます"
+                    )
 
-統計検定学習: {selected.toukei_time}h
-内容: {selected.toukei_content}
-気づき: {selected.toukei_issue}
+                # アクションボタン
+                col_action1, col_action2 = st.columns(2)
 
-【フォーマット要件】
-- タイトル: 「M月D日 / Day X：中小企業診断士への積み上げ」
-- 本文: 簡潔に、絵文字は最小限
-- ハッシュタグ: 2-3個まで
-- 文字数: 140文字以内厳守（改行含む）"""
+                with col_action1:
+                    if st.button("📋 プロンプトをコピー", key="copy_prompt_history", width="stretch"):
+                        try:
+                            pyperclip.copy(edited_prompt)
+                            st.toast("✅ プロンプトをコピー！", icon="📋")
+                        except (pyperclip.PyperclipException, Exception) as e:
+                            st.error(f"⚠️ コピーに失敗しました: {type(e).__name__}")
 
-                    try:
-                        pyperclip.copy(helper_prompt)
-                        st.toast("✅ Claudeヘルパーをコピー！", icon="✨")
-                        with st.expander("📋 プロンプト確認"):
-                            st.code(helper_prompt, language=None)
-                    except (pyperclip.PyperclipException, Exception) as e:
-                        st.error(f"⚠️ コピーに失敗しました: {type(e).__name__}")
+                with col_action2:
+                    if st.button("🔄 再生成", key="regenerate_history_tweet", width="stretch", type="primary"):
+                        from anthropic import Anthropic
+                        import os
+
+                        with st.spinner("🤖 AIが投稿文を作成中..."):
+                            try:
+                                # カスタムプロンプトを使用
+                                api_key = os.environ.get("ANTHROPIC_API_KEY")
+                                if not api_key:
+                                    raise ValueError("ANTHROPIC_API_KEYが設定されていません")
+
+                                client = Anthropic(api_key=api_key)
+                                message = client.messages.create(
+                                    model="claude-sonnet-4-20250514",
+                                    max_tokens=1200,  # 4,000文字対応（日本語約800文字）
+                                    temperature=0.7,
+                                    messages=[{"role": "user", "content": edited_prompt}]
+                                )
+
+                                improved_tweet = message.content[0].text.strip()
+
+                                # 既存のキーを削除してから新しい値を設定
+                                if tweet_display_key in st.session_state:
+                                    del st.session_state[tweet_display_key]
+
+                                # 新しい投稿文を設定
+                                st.session_state[tweet_display_key] = improved_tweet
+
+                                st.success("✅ 投稿文を再生成しました！")
+                                st.rerun()  # 画面を更新して投稿文プレビューに反映
+
+                            except ValueError as e:
+                                st.error(f"⚠️ {str(e)}")
+                                st.info("💡 ANTHROPIC_API_KEYを環境変数に設定してください")
+                            except Exception as e:
+                                st.error(f"⚠️ 生成エラー: {str(e)}")
 
                 # 学習詳細
                 st.markdown("---")
@@ -377,92 +435,195 @@ def main():
     # タイトル
     st.title("📚 診断士学習記録ダッシュボード")
 
-    # タブ切り替え（ダッシュボードを最初に）
-    tab1, tab2, tab3, tab4 = st.tabs(["🏠 ダッシュボード", "✏️ 今日の記録", "📊 分析", "⚙️ 設定"])
+    # タブ切り替え（カテゴリ整理版 + アーカイブ）
+    tab1, tab2, tab3, tab4, tab5 = st.tabs(["🏠 ダッシュボード", "📝 記録", "📊 分析", "📦 アーカイブ", "⚙️ 設定"])
 
     with tab1:
         show_dashboard()
 
     with tab2:
-        show_daily_input()
+        # 記録タブ内のサブタブ
+        subtab1, subtab2 = st.tabs(["✏️ 今日の記録", "📖 イベント記録"])
+
+        with subtab1:
+            show_daily_input()
+
+        with subtab2:
+            show_event_page()
 
     with tab3:
         show_analytics()
 
     with tab4:
+        show_archive()
+
+    with tab5:
         show_settings()
 
 
-def show_daily_mission(stats, days_to_toukei):
+def show_event_summary_cards():
+    """イベント記録のサマリーカード表示"""
+    from utils.event_stats import (
+        calculate_past_exam_stats,
+        calculate_material_progress_stats,
+        calculate_mock_exam_stats
+    )
+
+    db = st.session_state.db_service
+
+    # 統計計算
+    past_stats = calculate_past_exam_stats(db)
+    material_stats = calculate_material_progress_stats(db)
+    mock_stats = calculate_mock_exam_stats(db)
+
+    # データが全くない場合
+    total_events = past_stats['total_count'] + material_stats['total_materials'] + mock_stats['total_count']
+
+    if total_events == 0:
+        st.info("📝 まだイベント記録がありません。過去問や教材の学習記録を始めましょう!")
+        if st.button("📖 イベント記録ページへ", width="stretch"):
+            st.session_state.active_tab = "record"
+            st.rerun()
+        return
+
+    # 3列レイアウト
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.markdown("#### 📖 過去問演習")
+
+        if past_stats['total_count'] == 0:
+            st.info("まだ記録がありません")
+            st.caption("過去問を解いたら記録してみましょう!")
+        else:
+            st.metric("実施回数", f"{past_stats['total_count']}回")
+            st.metric("平均正答率", f"{past_stats['avg_correct_rate']}%")
+
+            if past_stats['avg_correct_rate'] >= 70:
+                st.success(f"✓ 合格水準達成率: {past_stats['pass_rate']}%")
+            elif past_stats['avg_correct_rate'] >= 60:
+                st.warning(f"⚠ 合格水準達成率: {past_stats['pass_rate']}%")
+            else:
+                st.info(f"→ 合格水準達成率: {past_stats['pass_rate']}%")
+
+    with col2:
+        st.markdown("#### 📚 教材周回")
+
+        if material_stats['total_materials'] == 0:
+            st.info("まだ登録がありません")
+            st.caption("使用している教材を登録しましょう!")
+        else:
+            st.metric("登録教材数", f"{material_stats['total_materials']}件")
+            st.metric("平均進捗率", f"{material_stats['avg_progress']}%")
+
+            if material_stats['completed_count'] > 0:
+                st.success(f"✓ 完了: {material_stats['completed_count']}件")
+            else:
+                st.info(f"→ 総学習時間: {material_stats['total_study_time']:.0f}分")
+
+            if material_stats['avg_understanding'] > 0:
+                stars = "⭐" * int(material_stats['avg_understanding'])
+                st.caption(f"平均理解度: {stars} ({material_stats['avg_understanding']})")
+
+    with col3:
+        st.markdown("#### 📊 模試・答練")
+
+        if mock_stats['total_count'] == 0:
+            st.info("まだ記録がありません")
+            st.caption("模試を受けたら結果を記録しましょう!")
+        else:
+            st.metric("受験回数", f"{mock_stats['total_count']}回")
+
+            if mock_stats['first_exam_avg_score'] > 0:
+                st.metric("1次平均得点率", f"{mock_stats['first_exam_avg_score']}%")
+
+            if mock_stats['second_exam_pass_count'] > 0:
+                st.success(f"✓ 2次合格水準達成: {mock_stats['second_exam_pass_count']}回")
+
+            if mock_stats['recent_performance'] == 'excellent':
+                st.success("パフォーマンス: 優秀!")
+            elif mock_stats['recent_performance'] == 'good':
+                st.info("パフォーマンス: 良好")
+            elif mock_stats['total_count'] > 0:
+                st.caption("パフォーマンス: 要改善")
+
+    # SNS投稿用画像ダウンロードボタン
+    st.markdown("---")
+    st.markdown("#### 📸 SNS投稿用画像")
+
+    col_btn1, col_btn2 = st.columns([1, 2])
+
+    with col_btn1:
+        if st.button("🖼 週次サマリー画像を生成", width="stretch", type="primary"):
+            from utils.image_generator import get_weekly_stats, generate_weekly_summary_card
+            from datetime import datetime
+
+            with st.spinner("画像生成中..."):
+                try:
+                    # 統計データ取得
+                    weekly_stats_data = get_weekly_stats(db)
+
+                    # 画像生成
+                    image_bytes = generate_weekly_summary_card(weekly_stats_data)
+
+                    # ダウンロードボタン表示
+                    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+                    st.download_button(
+                        label="💾 画像をダウンロード",
+                        data=image_bytes,
+                        file_name=f"study_summary_{timestamp}.png",
+                        mime="image/png",
+                        width="stretch"
+                    )
+
+                    st.success("✅ 画像生成完了！ダウンロードボタンをクリックしてください")
+
+                except Exception as e:
+                    st.error(f"⚠️ 画像生成エラー: {str(e)}")
+
+    with col_btn2:
+        st.caption("📊 過去問・教材・学習時間の週次統計を美しい画像にします（X/Twitter投稿用）")
+
+
+def show_daily_mission(stats, days_to_shindan):
     """今日のミッション - 最優先タスク表示"""
-    st.markdown("### 🎯 今日のミッション")
+    # ヘッダーは削除（レイアウトの整合性のため）
 
     # 今日の学習記録を取得
     today_record = st.session_state.db_service.get_record_by_date(date.today())
 
     # 今日の実績
-    toukei_today = today_record.toukei_time if today_record else 0.0
     shindan_today = today_record.shindan_time if today_record else 0.0
 
     # 目標時間を動的に計算（残り日数から逆算）
-    # 統計検定: 2026/2/1試験まで
-    # 診断士: 2026/8/5試験まで
-    toukei_exam_date = date(2026, 2, 1)
     shindan_exam_date = date(2026, 8, 5)
-
-    toukei_days_remaining = max((toukei_exam_date - date.today()).days, 1)
     shindan_days_remaining = max((shindan_exam_date - date.today()).days, 1)
 
     # 残り時間から1日あたりの目標を計算
-    toukei_remaining_hours = max(stats.toukei_goal - stats.toukei_total, 0)
     shindan_remaining_hours = max(stats.shindan_goal - stats.shindan_total, 0)
 
-    # フェーズ別に1日目標を計算
-    if date.today() < toukei_exam_date:
-        # 統計検定試験前: 統計優先(合計3h/日)
-        toukei_goal_daily = min(round(toukei_remaining_hours / toukei_days_remaining, 1), 2.5)
-        shindan_goal_daily = 0.5
-    elif date.today() < shindan_exam_date:
-        # 1次試験対策期間(統計試験後〜1次試験前): 診断士1次のみ(3h/日)
-        toukei_goal_daily = 0
-        shindan_1st_remaining = 600.0 - stats.shindan_total  # TODO: 1次と2次を分けて記録する必要あり
+    # 1次試験対策期間: 診断士1次のみ(3h/日)
+    if date.today() < shindan_exam_date:
+        shindan_1st_remaining = 600.0 - stats.shindan_total
         shindan_days_to_1st = max((shindan_exam_date - date.today()).days, 1)
         shindan_goal_daily = min(round(shindan_1st_remaining / shindan_days_to_1st, 1), 3.0)
     else:
         # 2次試験対策期間(1次試験後〜2次試験前): 診断士2次のみ(3h/日)
-        toukei_goal_daily = 0
         shindan_2nd_remaining = 170.0  # 2次試験対策時間
         shindan_days_to_2nd = max((date(2026, 10, 25) - date.today()).days, 1)
         shindan_goal_daily = min(round(shindan_2nd_remaining / shindan_days_to_2nd, 1), 3.0)
 
-    total_goal_daily = round(toukei_goal_daily + shindan_goal_daily, 1)
-
     # プログレス計算
-    toukei_progress = min((toukei_today / toukei_goal_daily) * 100, 100) if toukei_goal_daily > 0 else 0
     shindan_progress = min((shindan_today / shindan_goal_daily) * 100, 100) if shindan_goal_daily > 0 else 0
 
-    # カードデザイン
-    st.markdown(f"""<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 2rem; border-radius: 15px; box-shadow: 0 8px 16px rgba(0,0,0,0.2); margin-bottom: 1rem;">
+    # カードデザイン（診断士のみ、中央寄せ、最大幅70%）
+    st.markdown(f"""<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 2rem; border-radius: 15px; box-shadow: 0 8px 16px rgba(0,0,0,0.2); margin-bottom: 1rem; max-width: 70%; margin-left: auto; margin-right: auto;">
         <div style="color: white; font-size: 1.1rem; font-weight: 600; margin-bottom: 1.5rem;">📅 {date.today().strftime('%Y年%m月%d日')} の学習目標</div>
-        <div style="background: rgba(255, 107, 107, 0.95); padding: 1.5rem; border-radius: 12px; margin-bottom: 1rem; border-left: 5px solid #ff4757;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem;">
-                <div>
-                    <div style="color: white; font-size: 1.3rem; font-weight: 700;">📊 統計検定2級</div>
-                    <div style="color: rgba(255,255,255,0.9); font-size: 0.9rem; margin-top: 0.3rem;">⚠️ 試験まで残り {days_to_toukei} 日</div>
-                </div>
-                <div style="text-align: right;">
-                    <div style="color: white; font-size: 2rem; font-weight: 700;">{toukei_today:.1f}h / {toukei_goal_daily}h</div>
-                </div>
-            </div>
-            <div style="background: rgba(255,255,255,0.3); height: 12px; border-radius: 6px; overflow: hidden;">
-                <div style="background: white; height: 100%; width: {toukei_progress}%; transition: width 0.3s ease;"></div>
-            </div>
-        </div>
         <div style="background: rgba(78, 205, 196, 0.95); padding: 1.5rem; border-radius: 12px; border-left: 5px solid #0fb9b1;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem;">
                 <div>
                     <div style="color: white; font-size: 1.3rem; font-weight: 700;">📘 中小企業診断士</div>
-                    <div style="color: rgba(255,255,255,0.9); font-size: 0.9rem; margin-top: 0.3rem;">💪 着実に積み上げ</div>
+                    <div style="color: rgba(255,255,255,0.9); font-size: 0.9rem; margin-top: 0.3rem;">⚠️ 1次試験まで残り {days_to_shindan} 日</div>
                 </div>
                 <div style="text-align: right;">
                     <div style="color: white; font-size: 2rem; font-weight: 700;">{shindan_today:.1f}h / {shindan_goal_daily}h</div>
@@ -474,16 +635,11 @@ def show_daily_mission(stats, days_to_toukei):
         </div>
         <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 2px solid rgba(255,255,255,0.3); color: white; text-align: center;">
             <div style="font-size: 0.9rem; opacity: 0.9; margin-bottom: 0.5rem;">今日の合計学習時間</div>
-            <div style="font-size: 2.5rem; font-weight: 700;">{toukei_today + shindan_today:.1f}h / {total_goal_daily}h</div>
+            <div style="font-size: 2.5rem; font-weight: 700;">{shindan_today:.1f}h / {shindan_goal_daily}h</div>
         </div>
     </div>""", unsafe_allow_html=True)
 
-    # 今日の目標達成状況
-    remaining = total_goal_daily - (toukei_today + shindan_today)
-    if remaining > 0:
-        st.info(f"💡 あと {remaining:.1f}h で今日の目標達成！「✏️ 今日の記録」タブで入力できます")
-    else:
-        st.success("✅ 今日の目標達成！")
+    # 目標達成メッセージは削除（UIをシンプルに）
 
 
 def show_dashboard():
@@ -494,9 +650,11 @@ def show_dashboard():
 
     # 統計計算
     days_to_toukei, days_to_shindan = calculate_days_until_exam()
-    required_pace = calculate_required_daily_pace(
-        stats.shindan_total,
-        stats.shindan_goal,
+
+    # フェーズ別必要ペース計算（診断士のみ）
+    required_pace_shindan = calculate_required_daily_pace(
+        stats.shindan_1ji_total,
+        stats.shindan_1ji_goal,
         days_to_shindan
     )
     streak = calculate_streak(all_records)
@@ -504,134 +662,93 @@ def show_dashboard():
     monthly_stats = calculate_monthly_stats(all_records)
     current_phase = get_current_phase()
 
-    # 今日の古典名言
-    daily_quote = get_daily_quote()
-    st.markdown(f"""
-    <div class="achievement-banner">
-        <div style="font-size: 1.3rem; font-weight: 600; margin-bottom: 0.8rem; letter-spacing: 0.05em;">
-            {daily_quote['original']}
+    # グリッドレイアウト: 上段（名言+ミッション）/ 下段（カウントダウン）
+
+    # 上段: 2カラム（名言 + ミッション）
+    top_left, top_right = st.columns([1, 1])
+
+    with top_left:
+        # 📜 今日の古典名言
+        daily_quote = get_daily_quote()
+        st.markdown(f"""
+        <div class="achievement-banner" style="margin-bottom: 1rem;">
+            <div style="font-size: 1.2rem; font-weight: 600; margin-bottom: 0.6rem; letter-spacing: 0.05em;">
+                {daily_quote['original']}
+            </div>
+            <div style="font-size: 0.95rem; opacity: 0.9; margin-bottom: 0.4rem;">
+                {daily_quote['translation']}
+            </div>
+            <div style="font-size: 0.85rem; opacity: 0.75; text-align: right;">
+                ― {daily_quote['source']}
+            </div>
         </div>
-        <div style="font-size: 1rem; opacity: 0.9; margin-bottom: 0.5rem;">
-            {daily_quote['translation']}
-        </div>
-        <div style="font-size: 0.9rem; opacity: 0.75; text-align: right;">
-            ― {daily_quote['source']}
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
 
-    st.divider()
-
-    # 🎯 今日のミッション（最優先表示）
-    show_daily_mission(stats, days_to_toukei)
-
-    st.divider()
-
-    # ⏰ 試験日カウントダウン & 学習ペース（コンパクト表示）
-    col1, col2, col3, col4 = st.columns(4)
-
-    with col1:
-        st.metric(
-            "統計検定2級",
-            f"{days_to_toukei}日",
-            delta="2月1日",
-            delta_color="off"
-        )
-
-    with col2:
-        st.metric(
-            "診断士1次試験",
-            f"{days_to_shindan}日",
-            delta="8月5日",
-            delta_color="off"
-        )
-
-    with col3:
-        st.metric(
-            "必要ペース",
-            f"{required_pace}h/日",
-            delta="診断士目標達成まで",
-            delta_color="off"
-        )
-
-    with col4:
-        st.metric(
-            "継続日数",
-            f"{streak}日",
-            delta="🔥 連続学習中",
-            delta_color="off"
-        )
-
-    st.divider()
-
-    # 📈 現在の学習進捗（累計目標 vs 実績）
-    with st.expander("📈 累計進捗 - 目標 vs 実績", expanded=True):
+        # 📈 現在の学習進捗（名言の下に配置）
         show_goal_vs_actual(stats, st.session_state.db_service)
 
-    # 📊 最近の学習状況（週次・月次統合）
-    with st.expander("📊 最近の学習状況（週次・月次）", expanded=False):
-        col1, col2 = st.columns(2)
+    with top_right:
+        # 🎯 今日のミッション
+        show_daily_mission(stats, days_to_shindan)
 
-        with col1:
-            st.markdown("#### 📅 今週の学習時間")
-            st.markdown(f"""
-            <div style="background: rgba(50, 50, 50, 0.4); padding: 20px; border-radius: 12px; border-left: 4px solid #4ECDC4;">
-                <div style="color: #E0E0E0; margin-bottom: 8px;">
-                    📘 診断士: <strong style="color: #4ECDC4; font-size: 20px;">{weekly_stats['shindan']:.1f}h</strong>
-                </div>
-                <div style="color: #E0E0E0; margin-bottom: 8px;">
-                    📊 統計: <strong style="color: #FF6B6B; font-size: 20px;">{weekly_stats['toukei']:.1f}h</strong>
-                </div>
-                <div style="color: #FFD700; margin-top: 12px; font-size: 18px;">
-                    合計: <strong>{weekly_stats['total']:.1f}h</strong>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+    # 📊 学習進捗評価（カウントダウン統合版）
+    st.divider()
+    st.markdown("### 📊 学習進捗評価")
 
-        with col2:
-            st.markdown("#### 📅 今月の学習時間")
-            st.markdown(f"""
-            <div style="background: rgba(50, 50, 50, 0.4); padding: 20px; border-radius: 12px; border-left: 4px solid #FF6B6B;">
-                <div style="color: #E0E0E0; margin-bottom: 8px;">
-                    📘 診断士: <strong style="color: #4ECDC4; font-size: 20px;">{monthly_stats['shindan']:.1f}h</strong>
-                </div>
-                <div style="color: #E0E0E0; margin-bottom: 8px;">
-                    📊 統計: <strong style="color: #FF6B6B; font-size: 20px;">{monthly_stats['toukei']:.1f}h</strong>
-                </div>
-                <div style="color: #FFD700; margin-top: 12px; font-size: 18px;">
-                    合計: <strong>{monthly_stats['total']:.1f}h</strong>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+    # 診断士1次の今週実績（関連資格を除外）
+    today = date.today()
+    week_start = today - timedelta(days=today.weekday())
+    weekly_shindan_1ji = sum(
+        record.shindan_time
+        for record in all_records
+        if record.phase in ['基礎固め期', 'インプット期', 'アウトプット期', '直前期']
+        and week_start <= record.date <= today
+    )
 
-    # レビュー機能へのクイックアクセス
-    st.markdown("---")
-    st.markdown("### 📋 レビュー & 投稿文生成")
-    col_review1, col_review2 = st.columns(2)
+    # 診断士1次のみ表示（全幅）
+    weekly_pace_shindan = round(required_pace_shindan * 7, 1)
+    shindan_achievement_rate = (weekly_shindan_1ji / weekly_pace_shindan) * 100 if weekly_pace_shindan > 0 else 0
 
-    with col_review1:
-        with st.expander("📅 今週の振り返り", expanded=False):
-            show_weekly_review()
+    # 週の進行度を考慮した評価
+    weekday = today.weekday()
+    week_progress = (weekday + 1) / 7
+    expected_achievement = week_progress * 100
 
-    with col_review2:
-        with st.expander("📆 今月の振り返り", expanded=False):
-            show_monthly_review()
+    # 評価判定
+    if shindan_achievement_rate >= expected_achievement:
+        status = "🟢 順調！"
+        status_color = "#27ae60"
+        message = "必要ペースを達成しています！この調子で継続しましょう"
+    elif shindan_achievement_rate >= expected_achievement * 0.7:
+        status = "🟡 あと一息！"
+        status_color = "#f39c12"
+        message = "もう少しペースアップして目標達成を目指しましょう"
+    else:
+        status = "🔴 頑張ろう！"
+        status_color = "#e74c3c"
+        message = "今週の学習時間を増やして挽回しましょう"
 
-    # その他の分析セクション
-    st.markdown("---")
-    st.markdown("### 📊 詳細分析")
+    html_content = f"""
+    <div style="background: linear-gradient(135deg, {status_color}20 0%, {status_color}10 100%); padding: 35px; border-radius: 15px; border-left: 5px solid {status_color}; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); max-width: 700px; margin: 0 auto;">
+        <div style="font-size: 22px; font-weight: 600; margin-bottom: 15px; color: #e0e0e0;">📚 中小企業診断士 1次試験</div>
+        <div style="font-size: 40px; font-weight: bold; margin: 15px 0; color: {status_color};">{status}</div>
+        <div style="background: rgba(255,255,255,0.12); padding: 15px; border-radius: 8px; margin: 15px 0;">
+            <div style="font-size: 14px; color: #b0b0b0; margin-bottom: 6px;">⏰ 試験まで</div>
+            <div style="font-size: 28px; font-weight: bold; color: #ffffff;">{days_to_shindan}日 <span style="font-size: 15px; font-weight: normal; color: #d0d0d0;">(8月5日)</span></div>
+        </div>
+        <div style="background: rgba(255,255,255,0.12); padding: 15px; border-radius: 8px; margin: 15px 0;">
+            <div style="font-size: 14px; color: #b0b0b0; margin-bottom: 6px;">📊 今週の学習</div>
+            <div style="font-size: 24px; font-weight: bold; color: #ffffff;">{weekly_shindan_1ji:.1f}h <span style="font-size: 16px; color: #d0d0d0;">/ {weekly_pace_shindan:.1f}h</span></div>
+            <div style="font-size: 14px; color: #b0b0b0; margin-top: 6px;">達成率: {shindan_achievement_rate:.0f}% | 目標: 520h</div>
+        </div>
+        <div style="font-size: 14px; color: #b0b0b0; margin-top: 15px; font-style: italic;">{message}</div>
+    </div>
+    """
+    st.markdown(html_content, unsafe_allow_html=True)
 
-    # 🗺️ ロードマップ
-    with st.expander("🗺️ 学習ロードマップ", expanded=False):
-        show_roadmap()
-
-    # 📚 科目別進捗（1次/2次試験別）
-    with st.expander("📚 科目別進捗（1次/2次試験）", expanded=False):
-        show_subject_progress_by_category(st.session_state.db_service, all_records)
-
-    # 🏆 過去の学習成果
-    with st.expander("🏆 過去の学習成果", expanded=False):
-        show_learning_journey_summary(st.session_state.db_service, all_records)
+    # 🗺️ ロードマップ（全幅表示）
+    st.divider()
+    show_roadmap()
 
     # Obsidian同期モーダル
     if st.session_state.get('show_obsidian_sync', False):
@@ -639,389 +756,395 @@ def show_dashboard():
 
 
 def show_daily_input():
-    """日次記録入力画面（改善版）"""
-    st.header("✏️ 今日の学習記録")
+    """日次記録入力画面（複数科目対応版）"""
+    from components.daily_input import render_daily_input_form
+    from services.record_handler import save_record_with_sessions, generate_and_display_tweet
 
-    # 日付選択
-    col1, col2 = st.columns([2, 1])
-    with col1:
-        target_date = st.date_input("📅 日付", value=date.today())
+    # フォーム表示
+    form_result = render_daily_input_form()
 
-    with col2:
-        phase = get_current_phase()
-        st.info(f"**フェーズ**: {phase}")
+    if form_result:
+        action = form_result['action']
+        target_date = form_result['date']
+        phase = form_result['phase']
+        shindan_sessions = form_result['shindan_sessions']
+        toukei_sessions = form_result['toukei_sessions']
 
-    # 既存データ読み込み
-    existing_record = st.session_state.db_service.get_record_by_date(target_date)
-
-    # 中小企業診断士セクション
-    with st.expander("📘 中小企業診断士", expanded=True):
-        col1, col2 = st.columns([1, 2])
-
-        with col1:
-            default_time = 0.0
-            if existing_record:
-                default_time = float(existing_record.shindan_time)
-
-            shindan_time = st.number_input(
-                "学習時間（h）*",
-                min_value=0.0,
-                max_value=24.0,
-                value=default_time,
-                step=0.25,
-                key="shindan_time",
-                help="15分（0.25h）単位で入力できます"
+        try:
+            # レコード保存
+            record_id = save_record_with_sessions(
+                target_date,
+                phase,
+                shindan_sessions,
+                toukei_sessions,
+                st.session_state.db_service
             )
 
-        with col2:
-            subjects = st.session_state.db_service.get_subjects()
-            subject_names = [s[0] for s in subjects]
+            st.success(f"✅ 記録を保存しました（ID: {record_id}）")
 
-            # 絵文字付き表示オプションを作成
-            subject_options = []
-            subject_name_map = {}  # 表示名 → 科目名のマッピング
+            # レコード再取得
+            record = st.session_state.db_service.get_record_by_date(target_date)
+            all_sessions = shindan_sessions + toukei_sessions
 
-            for subject_name in subject_names:
-                emoji = SUBJECT_EMOJI_MAP.get(subject_name, "📚")
-                display_name = f"{emoji} {subject_name}"
-                subject_options.append(display_name)
-                subject_name_map[display_name] = subject_name
+            if action == 'save_and_tweet':
+                # 投稿文生成・表示
+                generate_and_display_tweet(
+                    record,
+                    all_sessions,
+                    st.session_state.db_service,
+                    st.session_state.obsidian_service
+                )
+            else:
+                # 保存のみ
+                st.info("💾 保存完了しました")
 
-            default_index = 0
-            if existing_record and existing_record.shindan_subject:
-                try:
-                    # 既存の科目名から表示名を検索
-                    for i, (display, actual) in enumerate(subject_name_map.items()):
-                        if actual == existing_record.shindan_subject:
-                            default_index = i
-                            break
-                except:
-                    pass
+            # セッション状態クリア
+            if 'shindan_sessions' in st.session_state:
+                del st.session_state['shindan_sessions']
+            if 'toukei_sessions' in st.session_state:
+                del st.session_state['toukei_sessions']
 
-            shindan_subject_display = st.selectbox(
-                "科目*",
-                subject_options,
-                index=default_index,
-                key="shindan_subject_select"
-            )
+        except Exception as e:
+            st.error(f"⚠️ エラーが発生しました: {str(e)}")
+            import traceback
+            with st.expander("詳細エラー情報"):
+                st.code(traceback.format_exc())
 
-            # 表示名から実際の科目名を取得
-            shindan_subject = subject_name_map[shindan_subject_display]
+def show_analytics():
+    """分析画面（リファクタリング版 - セッションベース）"""
+    st.header("📊 学習分析")
 
-        shindan_content = st.text_area(
-            "学習内容",
-            value=existing_record.shindan_content if existing_record else "",
-            placeholder="例: 過去問15問 正答率70%",
-            height=100,
-            key="shindan_content"
+    # 資格フィルタ
+    col_filter1, col_filter2 = st.columns([3, 1])
+    with col_filter1:
+        qualification_filter = st.selectbox(
+            "📚 表示する資格",
+            options=[
+                "現在の学習（診断士＋統計）",
+                "診断士（一次＋二次）",
+                "診断士一次試験のみ",
+                "診断士二次試験のみ",
+                "統計検定のみ",
+                "全て（過去資格含む）"
+            ],
+            index=0,
+            help="分析対象の資格を選択してください"
         )
 
-        shindan_issue = st.text_area(
-            "課題・気づき",
-            value=existing_record.shindan_issue if existing_record else "",
-            placeholder="例: 固変分解の理解が必要",
-            height=80,
-            key="shindan_issue"
-        )
-
-    # 統計検定2級セクション
-    with st.expander("📊 統計検定2級", expanded=True):
-        toukei_time = st.number_input(
-            "学習時間（h）",
-            min_value=0.0,
-            max_value=24.0,
-            value=float(existing_record.toukei_time) if existing_record else 0.0,
-            step=0.25,
-            key="toukei_time",
-            help="15分（0.25h）単位で入力できます"
-        )
-
-        toukei_content = st.text_area(
-            "学習内容",
-            value=existing_record.toukei_content if existing_record else "",
-            placeholder="例: 推定演習 第5章",
-            height=100,
-            key="toukei_content"
-        )
-
-        toukei_issue = st.text_area(
-            "課題・気づき",
-            value=existing_record.toukei_issue if existing_record else "",
-            placeholder="例: 信頼区間の計算に時間がかかる",
-            height=80,
-            key="toukei_issue"
-        )
+    # フィルタ条件を決定
+    if qualification_filter == "診断士（一次＋二次）":
+        filter_qualifications = ["shindan_1ji", "shindan_2ji"]
+    elif qualification_filter == "診断士一次試験のみ":
+        filter_qualifications = ["shindan_1ji"]
+    elif qualification_filter == "診断士二次試験のみ":
+        filter_qualifications = ["shindan_2ji"]
+    elif qualification_filter == "統計検定のみ":
+        filter_qualifications = ["toukei"]
+    elif qualification_filter == "現在の学習（診断士＋統計）":
+        filter_qualifications = ["shindan_1ji", "shindan_2ji", "toukei"]
+    else:  # 全て
+        filter_qualifications = None  # None = フィルタなし
 
     st.divider()
 
-    # 保存ボタン（大きく目立つように）
-    col1, col2 = st.columns([3, 1])
-
-    with col1:
-        if st.button("💾 保存してX投稿文を生成", type="primary", use_container_width=True):
-            save_and_generate_tweet(
-                target_date=target_date,
-                phase=phase,
-                shindan_time=shindan_time,
-                shindan_subject=shindan_subject,
-                shindan_content=shindan_content,
-                shindan_issue=shindan_issue,
-                toukei_time=toukei_time,
-                toukei_content=toukei_content,
-                toukei_issue=toukei_issue
-            )
-
-    with col2:
-        if st.button("💾 保存のみ", use_container_width=True):
-            save_record_only(
-                target_date=target_date,
-                phase=phase,
-                shindan_time=shindan_time,
-                shindan_subject=shindan_subject,
-                shindan_content=shindan_content,
-                shindan_issue=shindan_issue,
-                toukei_time=toukei_time,
-                toukei_content=toukei_content,
-                toukei_issue=toukei_issue
-            )
-
-
-def save_and_generate_tweet(
-    target_date,
-    phase,
-    shindan_time,
-    shindan_subject,
-    shindan_content,
-    shindan_issue,
-    toukei_time,
-    toukei_content,
-    toukei_issue
-):
-    """記録を保存してX投稿文を生成"""
-    record = StudyRecord(
-        date=target_date,
-        phase=phase,
-        shindan_time=shindan_time,
-        shindan_subject=shindan_subject,
-        shindan_content=shindan_content,
-        shindan_issue=shindan_issue,
-        toukei_time=toukei_time,
-        toukei_content=toukei_content,
-        toukei_issue=toukei_issue
+    # サービス初期化
+    from services.analytics import AnalyticsService
+    from components.kpi_dashboard import render_kpi_cards, render_motivational_message, render_insights
+    from components.analytics_charts import (
+        render_time_series_chart,
+        render_subject_bar_chart,
+        render_weekly_comparison_chart
     )
 
+    analytics = AnalyticsService(st.session_state.db_service)
+
+    # 現在のフェーズを取得
+    from utils.phase import get_current_phase
+    current_phase = get_current_phase()
+
+    # データ取得（N+1問題解消済み、フェーズ別平均計算、資格フィルタ対応）
     try:
-        record_id = st.session_state.db_service.save_record(record)
-        stats = st.session_state.db_service.get_cumulative_stats()
-        file_path = st.session_state.obsidian_service.export_to_obsidian(record, stats)
-        tweet_text = st.session_state.tweet_service.generate_daily_tweet(record, stats)
+        summaries = analytics.get_daily_summary(qualification_filter=filter_qualifications)
+        subject_stats = analytics.get_subject_breakdown(qualification_filter=filter_qualifications)
+        weekly_stats = analytics.get_weekly_stats(weeks=4, qualification_filter=filter_qualifications)
+        kpi_metrics = analytics.get_kpi_metrics(
+            current_phase=current_phase,
+            qualification_filter=filter_qualifications
+        )
     except Exception as e:
-        st.error(f"⚠️ データの保存中にエラーが発生しました: {str(e)}")
+        st.error(f"⚠️ データ取得エラー: {str(e)}")
         return
 
-    try:
-        pyperclip.copy(tweet_text)
-        clipboard_msg = "✅ クリップボードにコピーしました"
-    except:
-        clipboard_msg = "⚠️ クリップボードへのコピーに失敗しました"
-
-    st.success(f"✅ 記録を保存しました（ID: {record_id}）")
-    st.success(f"✅ Obsidianファイルを出力: {file_path.name}")
-    st.info(clipboard_msg)
-
-    st.subheader("📱 X投稿文")
-
-    # 投稿文プレビュー
-    st.text_area(
-        label="投稿文プレビュー",
-        value=tweet_text,
-        height=200,
-        key="daily_tweet_preview",
-        label_visibility="collapsed"
-    )
-
-    # 文字数カウント
-    show_char_counter(tweet_text)
-
-    # X投稿リンク生成（URLエンコード）
-    import urllib.parse
-    encoded_text = urllib.parse.quote(tweet_text)
-    twitter_url = f"https://twitter.com/intent/tweet?text={encoded_text}"
-
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.link_button("🐦 Xで投稿する", twitter_url, use_container_width=True, type="primary")
-    with col2:
-        if st.button("📋 投稿文を再コピー", use_container_width=True):
-            try:
-                pyperclip.copy(tweet_text)
-                st.success("✅ コピーしました")
-            except:
-                st.error("⚠️ コピーに失敗しました")
-    with col3:
-        if st.button("✨ Claude助言", use_container_width=True):
-            # Claudeヘルパープロンプトを生成
-            helper_prompt = f"""以下の学習記録をもとに、SNS投稿用の文章を140文字以内で簡潔に整形してください：
-
-【学習情報】
-日付: {target_date.strftime('%Y年%m月%d日')}
-フェーズ: {phase}
-
-診断士学習: {shindan_time}h
-科目: {shindan_subject}
-内容: {shindan_content}
-気づき: {shindan_issue}
-
-統計検定学習: {toukei_time}h
-内容: {toukei_content}
-気づき: {toukei_issue}
-
-【フォーマット要件】
-- タイトル: 「M月D日 / Day X：中小企業診断士への積み上げ」
-- 本文: 簡潔に、絵文字は最小限
-- ハッシュタグ: 2-3個まで
-- 文字数: 140文字以内厳守（改行含む）"""
-
-            try:
-                pyperclip.copy(helper_prompt)
-                st.success("✅ Claudeヘルパープロンプトをコピーしました！")
-                st.info("👉 Claude Codeに貼り付けて、文章の改善案をもらってください")
-                with st.expander("📋 コピーされたプロンプトを確認"):
-                    st.code(helper_prompt, language=None)
-            except (pyperclip.PyperclipException, Exception) as e:
-                st.error(f"⚠️ コピーに失敗しました: {type(e).__name__}")
-
-
-def save_record_only(
-    target_date,
-    phase,
-    shindan_time,
-    shindan_subject,
-    shindan_content,
-    shindan_issue,
-    toukei_time,
-    toukei_content,
-    toukei_issue
-):
-    """記録のみ保存（バリデーション付き）"""
-    # バリデーション: 合計時間チェック
-    total_time = shindan_time + toukei_time
-
-    if total_time > 24:
-        st.error(f"⚠️ 1日の合計学習時間が24時間を超えています（{total_time}h）")
-        st.warning("入力内容を確認してください")
-        return False
-
-    if total_time > 16:
-        st.warning(f"⚠️ 1日の学習時間が{total_time}時間です。長時間学習にご注意ください。")
-
-    # バリデーション: 0時間チェック
-    if total_time == 0:
-        st.warning("⚠️ 学習時間が0時間です。記録を保存しますか？")
-
-    record = StudyRecord(
-        date=target_date,
-        phase=phase,
-        shindan_time=shindan_time,
-        shindan_subject=shindan_subject,
-        shindan_content=shindan_content,
-        shindan_issue=shindan_issue,
-        toukei_time=toukei_time,
-        toukei_content=toukei_content,
-        toukei_issue=toukei_issue
-    )
-
-    try:
-        record_id = st.session_state.db_service.save_record(record)
-        stats = st.session_state.db_service.get_cumulative_stats()
-        file_path = st.session_state.obsidian_service.export_to_obsidian(record, stats)
-
-        st.success(f"✅ 記録を保存しました（ID: {record_id}）")
-        st.success(f"✅ Obsidianファイルを出力: {file_path.name}")
-        return True
-    except Exception as e:
-        st.error(f"⚠️ データの保存中にエラーが発生しました: {type(e).__name__}")
-        with st.expander("📋 詳細エラー情報"):
-            st.code(str(e))
-        return False
-
-
-def show_analytics():
-    """分析画面"""
-    st.header("📊 学習分析")
-
-    all_records = st.session_state.db_service.get_all_records()
-
-    if not all_records:
+    if not summaries:
         st.info("まだ記録がありません")
         return
 
-    # 学習時間推移グラフ
-    st.subheader("📈 学習時間の推移")
+    # KPIダッシュボード
+    render_kpi_cards(kpi_metrics)
 
-    # DataFrameに変換
-    df_data = []
-    for record in all_records:
-        df_data.append({
-            '日付': record.date,
-            '診断士': record.shindan_time,
-            '統計': record.toukei_time,
-            '合計': record.shindan_time + record.toukei_time
-        })
-
-    df = pd.DataFrame(df_data)
-    df = df.sort_values('日付')
-
-    # 折れ線グラフ
-    st.line_chart(df.set_index('日付')[['診断士', '統計', '合計']])
+    # モチベーションメッセージ
+    render_motivational_message(kpi_metrics)
 
     st.divider()
 
-    # 科目別集計
-    st.subheader("📚 科目別学習時間")
+    # グラフセクション（2カラム）
+    col1, col2 = st.columns(2)
 
-    subject_hours = {}
-    for record in all_records:
-        if record.shindan_subject and record.shindan_time > 0:
-            if record.shindan_subject not in subject_hours:
-                subject_hours[record.shindan_subject] = 0
-            subject_hours[record.shindan_subject] += record.shindan_time
+    with col1:
+        # 学習時間推移グラフ（Plotly版）
+        fig_time_series = render_time_series_chart(summaries, height=400)
+        if fig_time_series:
+            st.plotly_chart(fig_time_series, width="stretch", key="time_series_chart")
 
-    if subject_hours:
-        df_subjects = pd.DataFrame(list(subject_hours.items()), columns=['科目', '学習時間'])
-        df_subjects = df_subjects.sort_values('学習時間', ascending=False)
+    with col2:
+        # 週次比較グラフ（Plotly版）
+        fig_weekly = render_weekly_comparison_chart(weekly_stats, height=400)
+        if fig_weekly:
+            st.plotly_chart(fig_weekly, width="stretch", key="weekly_comparison_chart")
 
-        st.bar_chart(df_subjects.set_index('科目'))
+    st.divider()
+
+    # 科目別グラフ（全幅）
+    if subject_stats:
+        fig_subjects = render_subject_bar_chart(subject_stats, show_emoji=True, height=400)
+        if fig_subjects:
+            st.plotly_chart(fig_subjects, width="stretch", key="subject_bar_chart")
     else:
-        st.info("科目別データがありません")
+        st.info("📚 科目別データがありません")
+
+    st.divider()
+
+    # インサイト表示
+    render_insights(kpi_metrics, subject_stats)
 
     st.divider()
 
     # 履歴テーブル
     st.subheader("📜 学習履歴")
 
+    # 全レコード取得
+    all_records = st.session_state.db_service.get_all_records()
+
     for record in all_records[:10]:  # 最新10件
         with st.expander(f"{record.date.strftime('%Y年%m月%d日')} - {record.phase}"):
-            col1, col2 = st.columns(2)
+            # セッション取得（record.idがある場合）
+            sessions = []
+            if record.id:
+                sessions = st.session_state.db_service.get_study_sessions(record.id)
 
+            if sessions:
+                # 新形式: セッション別表示
+                shindan_sessions = [s for s in sessions if s.qualification in ('shindan_1ji', 'shindan_2ji')]
+                toukei_sessions = [s for s in sessions if s.qualification == 'toukei']
+
+                col1, col2 = st.columns(2)
+
+                with col1:
+                    st.markdown("**中小企業診断士**")
+                    st.write(f"合計: {record.shindan_time}h")
+                    for session in shindan_sessions:
+                        st.markdown(f"- **{session.subject}** {session.time_hours}h")
+                        if session.content:
+                            st.caption(f"内容: {session.content}")
+
+                with col2:
+                    st.markdown("**統計検定2級**")
+                    st.write(f"合計: {record.toukei_time}h")
+                    for session in toukei_sessions:
+                        if session.content:
+                            st.caption(f"内容: {session.content}")
+            else:
+                # レガシー形式表示
+                col1, col2 = st.columns(2)
+
+                with col1:
+                    st.markdown("**中小企業診断士**")
+                    st.write(f"時間: {record.shindan_time}h")
+                    if record.shindan_subject:
+                        st.write(f"科目: {record.shindan_subject}")
+                    if record.shindan_content:
+                        st.write(f"内容: {record.shindan_content}")
+
+                with col2:
+                    st.markdown("**統計検定2級**")
+                    st.write(f"時間: {record.toukei_time}h")
+                    if record.toukei_content:
+                        st.write(f"内容: {record.toukei_content}")
+
+            # 投稿文再生成ボタン
+            if st.button("📱 投稿文を生成", key=f"generate_tweet_{record.id or record.date}"):
+                from services.record_handler import generate_and_display_tweet
+
+                # セッション取得（なければレガシー変換）
+                if sessions:
+                    all_sessions = sessions
+                else:
+                    # レガシーデータをセッション形式に変換
+                    all_sessions = []
+                    if record.shindan_time > 0:
+                        all_sessions.append(StudySession(
+                            record_id=record.id or 0,
+                            qualification='shindan',
+                            subject=record.shindan_subject or '未分類',
+                            time_hours=record.shindan_time,
+                            content=record.shindan_content,
+                            issue=record.shindan_issue
+                        ))
+                    if record.toukei_time > 0:
+                        all_sessions.append(StudySession(
+                            record_id=record.id or 0,
+                            qualification='toukei',
+                            subject='統計検定2級',
+                            time_hours=record.toukei_time,
+                            content=record.toukei_content,
+                            issue=record.toukei_issue
+                        ))
+
+                generate_and_display_tweet(
+                    record,
+                    all_sessions,
+                    st.session_state.db_service,
+                    st.session_state.obsidian_service
+                )
+
+
+def show_archive():
+    """アーカイブ画面（過去取得資格の記録）"""
+    st.header("📦 学習アーカイブ")
+
+    st.info("""
+    💡 **アーカイブについて**
+
+    このタブでは、過去に取得した資格の学習記録を確認できます。
+    現在の学習（中小企業診断士・統計検定2級）とは別に管理されています。
+    """)
+
+    # サービス初期化
+    from services.analytics import AnalyticsService
+    from components.analytics_charts import render_subject_bar_chart
+
+    analytics = AnalyticsService(st.session_state.db_service)
+
+    st.divider()
+
+    # 過去資格のデータを表示
+    st.subheader("📚 過去取得資格の学習実績")
+
+    # 全科目データを取得（フィルタなし）
+    all_subject_stats = analytics.get_subject_breakdown(qualification_filter=None)
+
+    # 現在の学習資格を除外（診断士・統計以外）
+    archive_subjects = {
+        subject: stats
+        for subject, stats in all_subject_stats.items()
+        if stats.qualification not in ['shindan_1ji', 'shindan_2ji', 'toukei']
+    }
+
+    if not archive_subjects:
+        st.info("📭 アーカイブ記録はまだありません。")
+        st.caption("過去に取得した資格のデータがここに表示されます。")
+    else:
+        # 資格ごとにグループ化
+        qualifications = {}
+        for subject, stats in archive_subjects.items():
+            qual = stats.qualification
+            if qual not in qualifications:
+                qualifications[qual] = []
+            qualifications[qual].append((subject, stats))
+
+        # 資格ごとに表示
+        for qualification, subjects in qualifications.items():
+            # 資格名の表示
+            qual_name_map = {
+                'boki': '📊 簿記',
+                'kihon_joho': '💻 基本情報技術者',
+                'other': '📖 その他'
+            }
+            qual_display = qual_name_map.get(qualification, f"📖 {qualification}")
+
+            st.markdown(f"### {qual_display}")
+
+            # その資格の合計時間を計算
+            total_hours = sum(stats.total_hours for _, stats in subjects)
+            session_count = sum(stats.session_count for _, stats in subjects)
+
+            col1, col2, col3 = st.columns(3)
             with col1:
-                st.markdown("**中小企業診断士**")
-                st.write(f"時間: {record.shindan_time}h")
-                if record.shindan_subject:
-                    st.write(f"科目: {record.shindan_subject}")
-                if record.shindan_content:
-                    st.write(f"内容: {record.shindan_content}")
-
+                st.metric("📚 科目数", f"{len(subjects)}科目")
             with col2:
-                st.markdown("**統計検定2級**")
-                st.write(f"時間: {record.toukei_time}h")
-                if record.toukei_content:
-                    st.write(f"内容: {record.toukei_content}")
+                st.metric("⏱️ 総学習時間", f"{total_hours}h")
+            with col3:
+                st.metric("📝 セッション数", f"{session_count}回")
+
+            # 科目別詳細テーブル
+            with st.expander("📋 科目別詳細", expanded=False):
+                subject_data = []
+                for subject, stats in subjects:
+                    subject_data.append({
+                        "科目": subject,
+                        "学習時間": f"{stats.total_hours}h",
+                        "セッション数": f"{stats.session_count}回",
+                        "平均時間": f"{stats.avg_hours_per_session}h",
+                        "最終学習日": stats.last_studied.strftime('%Y-%m-%d') if stats.last_studied else "-"
+                    })
+
+                df = pd.DataFrame(subject_data)
+                st.dataframe(df, width="stretch", hide_index=True)
+
+            st.divider()
+
+    st.divider()
+
+    # データ管理セクション
+    st.subheader("🔧 データ管理")
+
+    st.warning("""
+    ⚠️ **データ整理について**
+
+    現在、過去資格のデータが「診断士」として誤って登録されている可能性があります。
+    将来的には、データの資格分類を修正する機能を追加予定です。
+    """)
+
+    # 全セッションの資格分類を確認
+    with st.expander("🔍 データ分類状況の確認", expanded=False):
+        with st.session_state.db_service.get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+                SELECT s.qualification, COUNT(s.id) as count, SUM(s.time_hours) as total_hours
+                FROM study_sessions s
+                GROUP BY s.qualification
+                ORDER BY total_hours DESC
+            """)
+
+            qual_data = []
+            for row in cursor.fetchall():
+                qual_map = {
+                    'shindan_1ji': '🏢 診断士(一次試験)',
+                    'shindan_2ji': '🏢 診断士(二次試験)',
+                    'toukei': '📈 統計検定2級',
+                    'boki': '📊 簿記',
+                    'kihon_joho': '💻 基本情報技術者',
+                    'other': '📖 その他'
+                }
+                qual_data.append({
+                    "資格": qual_map.get(row[0], row[0]),
+                    "セッション数": f"{row[1]}回",
+                    "総学習時間": f"{row[2]}h"
+                })
+
+            df_qual = pd.DataFrame(qual_data)
+            st.dataframe(df_qual, width="stretch", hide_index=True)
 
 
 def show_settings():
     """設定画面"""
     st.header("⚙️ 設定")
+
+    # 科目設定セクション
+    from components.subject_settings import show_subject_settings
+    show_subject_settings()
+
+    st.divider()
 
     st.subheader("データベース")
     st.write("パス: `~/study_app/study_records.db`")
@@ -1038,17 +1161,257 @@ def show_settings():
 
     st.divider()
 
+    # 生データビューアー
+    st.subheader("🔍 生データビューアー")
+    st.write("全セッションデータを表示・編集・削除できます")
+
+    with st.session_state.db_service.get_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT
+                s.id,
+                r.date,
+                r.phase,
+                s.qualification,
+                s.subject,
+                s.time_hours,
+                s.content,
+                s.issue
+            FROM study_sessions s
+            JOIN records r ON s.record_id = r.id
+            ORDER BY r.date DESC, s.id DESC
+        """)
+
+        data = cursor.fetchall()
+
+        if data:
+            # データフレームに変換
+            df = pd.DataFrame(data, columns=[
+                "ID", "日付", "フェーズ", "資格", "科目", "時間(h)", "内容", "課題"
+            ])
+
+            # 資格名を日本語に変換
+            qual_map = {
+                'shindan_1ji': '診断士(一次)',
+                'shindan_2ji': '診断士(二次)',
+                'toukei': '統計検定',
+                'boki': '簿記',
+                'kihon_joho': '基本情報',
+                'other': 'その他'
+            }
+            df['資格'] = df['資格'].map(lambda x: qual_map.get(x, x))
+
+            # 表示
+            st.dataframe(df, width="stretch", hide_index=True)
+
+            st.caption(f"総セッション数: {len(df)}件")
+
+            # 削除機能
+            with st.expander("🗑️ データ削除"):
+                st.warning("⚠️ 削除したデータは復元できません。慎重に操作してください。")
+
+                session_id = st.number_input(
+                    "削除するセッションID",
+                    min_value=1,
+                    max_value=int(df['ID'].max()) if len(df) > 0 else 1,
+                    step=1
+                )
+
+                if st.button("🗑️ 選択したセッションを削除", type="secondary"):
+                    with st.session_state.db_service.get_connection() as del_conn:
+                        del_cursor = del_conn.cursor()
+                        del_cursor.execute("DELETE FROM study_sessions WHERE id = ?", (session_id,))
+                        del_conn.commit()
+                        st.success(f"✅ セッションID {session_id} を削除しました")
+                        st.rerun()
+        else:
+            st.info("データがありません")
+
+    st.divider()
+
     st.subheader("Obsidian出力先")
     obsidian_path = st.session_state.obsidian_service.vault_path
     st.code(str(obsidian_path))
 
     st.divider()
 
-    st.subheader("科目マスタ")
-    subjects = st.session_state.db_service.get_subjects()
+    st.subheader("💾 データバックアップ")
+    st.write("学習記録をCSV形式でエクスポートできます")
 
-    for subject_name, abbr in subjects:
-        st.write(f"- {subject_name} ({abbr}) - 目標: 90h")
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        if st.button("📅 日々の記録をエクスポート", width="stretch"):
+            import csv
+            from io import StringIO
+            from datetime import datetime
+
+            # 全記録取得
+            all_records = st.session_state.db_service.get_all_records()
+
+            if all_records:
+                # CSV生成
+                output = StringIO()
+                writer = csv.writer(output)
+
+                # ヘッダー
+                writer.writerow([
+                    '日付', 'フェーズ',
+                    '診断士時間', '診断士科目', '診断士内容', '診断士課題',
+                    '統計時間', '統計内容', '統計課題'
+                ])
+
+                # データ
+                for record in all_records:
+                    writer.writerow([
+                        record.date.isoformat(),
+                        record.phase,
+                        record.shindan_time,
+                        record.shindan_subject,
+                        record.shindan_content,
+                        record.shindan_issue,
+                        record.toukei_time,
+                        record.toukei_content,
+                        record.toukei_issue
+                    ])
+
+                # ダウンロードボタン
+                csv_data = output.getvalue()
+                timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+
+                st.download_button(
+                    label="💾 CSVダウンロード",
+                    data=csv_data,
+                    file_name=f"study_records_{timestamp}.csv",
+                    mime="text/csv",
+                    width="stretch"
+                )
+                st.success(f"✅ {len(all_records)}件の記録を準備しました")
+            else:
+                st.warning("データがありません")
+
+    with col2:
+        if st.button("📖 イベント記録をエクスポート", width="stretch"):
+            import csv
+            import json
+            from io import StringIO
+            from datetime import datetime
+
+            # 全イベント取得
+            db = st.session_state.db_service
+            all_events = db.get_recent_events(limit=10000)
+
+            if all_events:
+                # CSV生成
+                output = StringIO()
+                writer = csv.writer(output)
+
+                # ヘッダー
+                writer.writerow([
+                    'ID', 'イベント種別', '日付', '科目', 'メモ', '詳細データ'
+                ])
+
+                # データ
+                for event in all_events:
+                    writer.writerow([
+                        event['id'],
+                        event['event_type'],
+                        event['date'],
+                        event['subject'],
+                        event['memo'],
+                        json.dumps(event['details'], ensure_ascii=False)
+                    ])
+
+                # ダウンロードボタン
+                csv_data = output.getvalue()
+                timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+
+                st.download_button(
+                    label="💾 CSVダウンロード",
+                    data=csv_data,
+                    file_name=f"study_events_{timestamp}.csv",
+                    mime="text/csv",
+                    width="stretch"
+                )
+                st.success(f"✅ {len(all_events)}件のイベントを準備しました")
+            else:
+                st.warning("データがありません")
+
+    with col3:
+        if st.button("📚 教材マスタをエクスポート", width="stretch"):
+            import csv
+            from io import StringIO
+            from datetime import datetime
+
+            # 全教材取得
+            db = st.session_state.db_service
+            all_materials = db.get_all_materials()
+
+            if all_materials:
+                # CSV生成
+                output = StringIO()
+                writer = csv.writer(output)
+
+                # ヘッダー
+                writer.writerow([
+                    'ID', '教材名', '科目', '種別', '目標周回数',
+                    '現在周回数', '総学習時間', '平均理解度', '最終学習日'
+                ])
+
+                # データ
+                for material in all_materials:
+                    writer.writerow([
+                        material['id'],
+                        material['name'],
+                        material['subject'],
+                        material['material_type'],
+                        material['target_laps'],
+                        material['current_lap'],
+                        material['total_time'],
+                        material['avg_understanding'],
+                        material['last_study_date']
+                    ])
+
+                # ダウンロードボタン
+                csv_data = output.getvalue()
+                timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+
+                st.download_button(
+                    label="💾 CSVダウンロード",
+                    data=csv_data,
+                    file_name=f"materials_{timestamp}.csv",
+                    mime="text/csv",
+                    width="stretch"
+                )
+                st.success(f"✅ {len(all_materials)}件の教材を準備しました")
+            else:
+                st.warning("データがありません")
+
+    st.caption("💡 定期的にバックアップを取得することをおすすめします")
+
+    st.divider()
+
+    st.subheader("🔗 n8n連携")
+    st.write("学習データをn8nワークフローに送信できます")
+
+    col_n8n1, col_n8n2 = st.columns(2)
+
+    with col_n8n1:
+        st.info("📊 イベント登録時に自動でWebhook送信されます")
+        st.caption("過去問・教材周回・模試の記録が自動的にn8nに送信されます")
+
+    with col_n8n2:
+        if st.button("📤 週次サマリーを送信", width="stretch", type="primary"):
+            from utils.webhook import send_weekly_summary_to_n8n
+
+            with st.spinner("週次サマリーを送信中..."):
+                success = send_weekly_summary_to_n8n(st.session_state.db_service)
+
+                if success:
+                    st.success("✅ 週次サマリーをn8nに送信しました！")
+                else:
+                    st.error("⚠️ 送信に失敗しました。n8nワークフローが起動しているか確認してください。")
+
 
 
 def show_obsidian_sync_modal():
@@ -1091,7 +1454,7 @@ def show_obsidian_sync_modal():
 
             col1, col2 = st.columns(2)
             with col1:
-                if st.button("🔄 同期実行", type="primary", use_container_width=True):
+                if st.button("🔄 同期実行", type="primary", width="stretch"):
                     with st.spinner("同期中..."):
                         success, message = sync_service.sync_daily_note(selected_date)
 
@@ -1104,7 +1467,7 @@ def show_obsidian_sync_modal():
                             st.error(message)
 
             with col2:
-                if st.button("キャンセル", use_container_width=True):
+                if st.button("キャンセル", width="stretch"):
                     st.session_state.show_obsidian_sync = False
                     st.rerun()
 
@@ -1133,7 +1496,7 @@ def show_obsidian_sync_modal():
 
             col1, col2 = st.columns(2)
             with col1:
-                if st.button("🔄 一括同期実行", type="primary", use_container_width=True):
+                if st.button("🔄 一括同期実行", type="primary", width="stretch"):
                     with st.spinner("同期中..."):
                         results = sync_service.sync_date_range(start_date, end_date)
 
@@ -1151,9 +1514,36 @@ def show_obsidian_sync_modal():
                         st.rerun()
 
             with col2:
-                if st.button("キャンセル", use_container_width=True):
+                if st.button("キャンセル", width="stretch"):
                     st.session_state.show_obsidian_sync = False
                     st.rerun()
+
+
+def show_event_page():
+    """イベント記録ページ - 過去問演習・教材周回・模試記録"""
+    st.markdown("## 📝 イベント記録")
+    st.markdown("過去問演習や教材の周回状況を記録して、学習の進捗を可視化します")
+
+    # イベント種類のタブ
+    event_tab1, event_tab2, event_tab3 = st.tabs(["📖 過去問演習", "📚 教材周回", "📊 模試・答練"])
+
+    with event_tab1:
+        # 過去問演習記録セクション
+        render_past_exam_form()
+        st.markdown("---")
+        show_recent_past_exams()
+
+    with event_tab2:
+        # 教材周回記録セクション
+        render_material_lap_form()
+        st.markdown("---")
+        show_materials_list()
+
+    with event_tab3:
+        # 模試・答練記録セクション
+        render_mock_exam_form()
+        st.markdown("---")
+        show_recent_mock_exams()
 
 
 if __name__ == "__main__":

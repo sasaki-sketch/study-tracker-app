@@ -1,0 +1,108 @@
+[
+  {
+    "tool_name": "AskUserQuestion",
+    "tool_use_id": "toolu_01U9vF9p9o6bGXt2HjRmLnwo",
+    "session_id": "38a684db-7f3d-4794-889f-688dcb649557",
+    "hook_event_name": "PreToolUse",
+    "tool_summary": {
+      "tool_name": "AskUserQuestion",
+      "questions_count": 1
+    }
+  },
+  {
+    "tool_name": "Write",
+    "tool_use_id": "toolu_01Kadcm6zycYkbUAHqcqLVzp",
+    "session_id": "38a684db-7f3d-4794-889f-688dcb649557",
+    "hook_event_name": "PreToolUse",
+    "tool_summary": {
+      "tool_name": "Write",
+      "file_path": "/Users/sasaki/02_Personal/anki/anki/scripts/mba/mm/porter23/mba_mm_porter23_ch2q04_verified.py",
+      "content_length": 1566
+    }
+  },
+  {
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01T5E1YZXjbLunAqAoi2kLze",
+    "session_id": "38a684db-7f3d-4794-889f-688dcb649557",
+    "hook_event_name": "PreToolUse",
+    "tool_summary": {
+      "tool_name": "Bash",
+      "command": "python3 mba_mm_porter23_ch2q04_verified.py && curl -s -X POST http://localhost:8765 -d \"{\\\"action\\\": \\\"importPackage\\\", \\\"version\\\": 6, \\\"params\\\": {\\\"path\\\": \\\"/Users/sasaki/02_Personal/anki/anki/scr",
+      "description": "Generate and import to Anki"
+    }
+  },
+  {
+    "tool_name": "Edit",
+    "tool_use_id": "toolu_01FY8kpx4AxhLCLAj8dFCxrP",
+    "session_id": "38a684db-7f3d-4794-889f-688dcb649557",
+    "hook_event_name": "PreToolUse",
+    "tool_summary": {
+      "tool_name": "Edit",
+      "file_path": "/Users/sasaki/02_Personal/anki/anki/scripts/mba/mm/porter23/_index.json",
+      "replace_all": false
+    }
+  },
+  {
+    "tool_name": "AskUserQuestion",
+    "tool_use_id": "toolu_01UdtutVriv3ZSTrSrKvtYM7",
+    "session_id": "38a684db-7f3d-4794-889f-688dcb649557",
+    "hook_event_name": "PreToolUse",
+    "tool_summary": {
+      "tool_name": "AskUserQuestion",
+      "questions_count": 1
+    }
+  },
+  {
+    "tool_name": "AskUserQuestion",
+    "tool_use_id": "toolu_01QBGmqeSUkyL1ccpmXYR9Nw",
+    "session_id": "38a684db-7f3d-4794-889f-688dcb649557",
+    "hook_event_name": "PreToolUse",
+    "tool_summary": {
+      "tool_name": "AskUserQuestion",
+      "questions_count": 1
+    }
+  },
+  {
+    "tool_name": "Write",
+    "tool_use_id": "toolu_01TTpr5iWQKEFcePKTuVcq8J",
+    "session_id": "38a684db-7f3d-4794-889f-688dcb649557",
+    "hook_event_name": "PreToolUse",
+    "tool_summary": {
+      "tool_name": "Write",
+      "file_path": "/Users/sasaki/02_Personal/anki/anki/scripts/mba/mm/porter23/mba_mm_porter23_ch3q01_verified.py",
+      "content_length": 1702
+    }
+  },
+  {
+    "tool_name": "Bash",
+    "tool_use_id": "toolu_01NApU3gi1T6ZCXCr8iBg8eH",
+    "session_id": "38a684db-7f3d-4794-889f-688dcb649557",
+    "hook_event_name": "PreToolUse",
+    "tool_summary": {
+      "tool_name": "Bash",
+      "command": "python3 mba_mm_porter23_ch3q01_verified.py && curl -s -X POST http://localhost:8765 -d \"{\\\"action\\\": \\\"importPackage\\\", \\\"version\\\": 6, \\\"params\\\": {\\\"path\\\": \\\"/Users/sasaki/02_Personal/anki/anki/scr",
+      "description": "Generate and import to Anki"
+    }
+  },
+  {
+    "tool_name": "Edit",
+    "tool_use_id": "toolu_01ByN9Qd1UVEyaX4nxLCtza8",
+    "session_id": "38a684db-7f3d-4794-889f-688dcb649557",
+    "hook_event_name": "PreToolUse",
+    "tool_summary": {
+      "tool_name": "Edit",
+      "file_path": "/Users/sasaki/02_Personal/anki/anki/scripts/mba/mm/porter23/_index.json",
+      "replace_all": false
+    }
+  },
+  {
+    "tool_name": "AskUserQuestion",
+    "tool_use_id": "toolu_01QTUwhnfQwQrCpJKp1QzgzW",
+    "session_id": "38a684db-7f3d-4794-889f-688dcb649557",
+    "hook_event_name": "PreToolUse",
+    "tool_summary": {
+      "tool_name": "AskUserQuestion",
+      "questions_count": 1
+    }
+  }
+]

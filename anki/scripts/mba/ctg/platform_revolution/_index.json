@@ -1,0 +1,112 @@
+{
+  "book": {
+    "title": "パイプライン型事業から脱却せよ_プラットフォーム革命",
+    "author": "マーシャル・W・ヴァン・アルスタイン他",
+    "short_name": "platform_revolution",
+    "course": "Changing the Game",
+    "course_code": "ctg",
+    "total_questions": 11,
+    "source_type": "目次形式",
+    "note": "DHBR掲載のHBR論文（Pipelines, Platforms, and the New Rules of Strategy）。Ch1=1論文扱い、10節を設問単位とする。"
+  },
+  "deck_prefix": "NUCB_EMBA::Changing_the_Game::プラットフォーム革命",
+  "model_id_base": 1776237183,
+  "deck_id_base": 2776237183,
+  "chapters": [
+    {
+      "number": 1,
+      "title": "プラットフォームの新たな戦略ルール",
+      "deck_suffix": "Ch1_新たな戦略ルール",
+      "questions": [
+        {
+          "id": "ch1q01",
+          "section_title": "パイプラインからプラットフォームへ",
+          "text": "プラットフォーム戦略は既存市場にどのような影響を与えるか。その理由を簡潔に述べよ。",
+          "status": "completed",
+          "completed_at": "2026-04-15T16:15:00+09:00",
+          "script_file": "mba_ctg_platform_revolution_ch1q01_verified.py"
+        },
+        {
+          "id": "ch1q02",
+          "section_title": "経営資源の管理から編成へ",
+          "text": "パイプライン型とプラットフォーム型の違いを、エコシステムと経営資源との関わり方の観点から説明せよ。",
+          "status": "completed",
+          "completed_at": "2026-04-15T16:25:00+09:00",
+          "script_file": "mba_ctg_platform_revolution_ch1q02_verified.py"
+        },
+        {
+          "id": "ch1q03",
+          "section_title": "内部の最適化から外部とのインタラクションへ",
+          "text": "パイプライン型の内部最適化とプラットフォーム型の外部インタラクション促進の違いを、価値創造メカニズムの観点から説明せよ。",
+          "status": "completed",
+          "completed_at": "2026-04-15T16:35:00+09:00",
+          "script_file": "mba_ctg_platform_revolution_ch1q03_verified.py"
+        },
+        {
+          "id": "ch1q04",
+          "section_title": "顧客価値の重視からエコシステム価値の重視へ",
+          "text": "なぜプラットフォーム型事業では個別顧客のLTV最大化ではなくエコシステム全体価値の最大化が必要なのか、多サイド構造とネットワーク効果の観点から説明せよ。",
+          "status": "completed",
+          "completed_at": "2026-04-15T16:45:00+09:00",
+          "script_file": "mba_ctg_platform_revolution_ch1q04_verified.py"
+        },
+        {
+          "id": "ch1q05",
+          "section_title": "ネットワーク効果の威力",
+          "text": "ネットワーク効果がプラットフォーム型事業の核心とされる理由を、5forcesとの対比とWinner-Takes-All構造の観点から論じよ。",
+          "status": "completed",
+          "completed_at": "2026-04-17T00:00:00+09:00",
+          "script_file": "mba_ctg_platform_revolution_ch1q05_verified.py"
+        },
+        {
+          "id": "ch1q06",
+          "section_title": "プラットフォームはどう戦略を変化させるか",
+          "text": "プラットフォーム型事業では、5forcesの各要因の境界がなぜ曖昧になるのか。パイプライン型との対比で説明せよ。",
+          "status": "completed",
+          "completed_at": "2026-04-18T08:30:00+09:00",
+          "script_file": "mba_ctg_platform_revolution_ch1q06_verified.py"
+        },
+        {
+          "id": "ch1q07",
+          "section_title": "ネットワークが促す外部志向への転換",
+          "text": "従来のアウトソーシングとプラットフォーム型の外部志向はどう異なるか。段階的な変化を説明せよ。",
+          "status": "completed",
+          "completed_at": "2026-04-18T08:40:00+09:00",
+          "script_file": "mba_ctg_platform_revolution_ch1q07_verified.py"
+        },
+        {
+          "id": "ch1q08",
+          "section_title": "エコシステムが発揮する力",
+          "text": "パイプライン型企業がプラットフォーム事業者から受ける3つの脅威パターンを説明せよ。",
+          "status": "completed",
+          "completed_at": "2026-04-18T08:50:00+09:00",
+          "script_file": "mba_ctg_platform_revolution_ch1q08_verified.py"
+        },
+        {
+          "id": "ch1q09",
+          "section_title": "重点を置くべきところ",
+          "text": "プラットフォーム事業を立ち上げる際に「量より質、狭く始めて広げる」が定石とされる理由を説明せよ。",
+          "status": "completed",
+          "completed_at": "2026-04-18T08:55:00+09:00",
+          "script_file": "mba_ctg_platform_revolution_ch1q09_verified.py"
+        },
+        {
+          "id": "ch1q10",
+          "section_title": "波及効果の活用",
+          "text": "",
+          "status": "not_started",
+          "completed_at": null,
+          "script_file": null
+        },
+        {
+          "id": "ch1q11",
+          "section_title": "業績指標",
+          "text": "",
+          "status": "not_started",
+          "completed_at": null,
+          "script_file": null
+        }
+      ]
+    }
+  ]
+}

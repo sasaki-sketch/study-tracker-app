@@ -1,0 +1,206 @@
+{
+  "book": {
+    "title": "ポーターの「競争の戦略」を使いこなすための23問",
+    "author": "牧田幸裕",
+    "short_name": "porter23",
+    "course": "Marketing Management",
+    "course_code": "mm",
+    "total_questions": 23
+  },
+  "deck_prefix": "NUCB_EMBA::Marketing_Management::ポーター23問",
+  "model_id_base": 1702010100,
+  "deck_id_base": 2702010100,
+  "chapters": [
+    {
+      "number": 1,
+      "title": "なぜ事業戦略は機能しないのか？",
+      "deck_suffix": "Ch1_事業戦略",
+      "questions": [
+        {
+          "id": "ch1q01",
+          "text": "日本企業が策定する事業戦略は、なぜ結果を出せないケースが多いのか",
+          "status": "completed",
+          "completed_at": "2026-03-24T21:30:00+09:00",
+          "script_file": "mba_mm_porter23_ch1q01_verified.py"
+        },
+        {
+          "id": "ch1q02",
+          "text": "事業戦略の基本パターンには何があるのか",
+          "status": "completed",
+          "completed_at": "2026-03-24T21:35:00+09:00",
+          "script_file": "mba_mm_porter23_ch1q02_verified.py"
+        },
+        {
+          "id": "ch1q03",
+          "text": "コストリーダーシップを採用できる企業はどのような企業なのか。またコストリーダーシップと低価格戦略は同じ戦略なのか",
+          "status": "completed",
+          "completed_at": "2026-03-24T21:45:00+09:00",
+          "script_file": "mba_mm_porter23_ch1q03_verified.py"
+        },
+        {
+          "id": "ch1q04",
+          "text": "差別化を採用すべき企業はどのような企業なのか。差別化を採用した場合、全体市場をターゲット顧客にできるのか。低価格戦略は差別化ではないのか。差別化と集中は何が違うのか",
+          "status": "completed",
+          "completed_at": "2026-03-24T21:55:00+09:00",
+          "script_file": "mba_mm_porter23_ch1q04_verified.py"
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "なぜ「競争の戦略」を使いこなせないのか",
+      "deck_suffix": "Ch2_競争の戦略",
+      "questions": [
+        {
+          "id": "ch2q01",
+          "text": "なぜ「競争の戦略」は実際のビジネスの事業戦略策定で使いこなすのが非常に難しいのか",
+          "status": "completed",
+          "completed_at": "2026-03-28T00:15:00+09:00",
+          "script_file": "mba_mm_porter23_ch2q01_verified.py"
+        },
+        {
+          "id": "ch2q02",
+          "text": "どうすれば業界構造分析と戦略基本パターンをつなげることができるのか",
+          "status": "completed",
+          "completed_at": "2026-03-28T09:00:00+09:00",
+          "script_file": "mba_mm_porter23_ch2q02_verified.py"
+        },
+        {
+          "id": "ch2q03",
+          "text": "熾烈なシェア争いから脱却し、「手詰まり型事業」に陥らないためには、どうすればよいのか",
+          "status": "completed",
+          "completed_at": "2026-03-28T09:10:00+09:00",
+          "script_file": "mba_mm_porter23_ch2q03_verified.py"
+        },
+        {
+          "id": "ch2q04",
+          "text": "なぜ日本企業の戦略基本パターンは、違う競争軸を出せないのか",
+          "status": "completed",
+          "completed_at": "2026-03-28T09:20:00+09:00",
+          "script_file": "mba_mm_porter23_ch2q04_verified.py"
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "顧客に「有意差」を感じさせられるか",
+      "deck_suffix": "Ch3_有意差",
+      "questions": [
+        {
+          "id": "ch3q01",
+          "text": "機能する差別化を実現するために、日本企業が乗り越えなければならない課題はなにか",
+          "status": "completed",
+          "completed_at": "2026-03-29T00:30:00+09:00",
+          "script_file": "mba_mm_porter23_ch3q01_verified.py"
+        },
+        {
+          "id": "ch3q02",
+          "text": "ターゲット顧客に当事者意識を持って、肌感覚を持って、憑依することができるか",
+          "status": "completed",
+          "completed_at": "2026-04-03T23:00:00+09:00",
+          "script_file": "mba_mm_porter23_ch3q02_verified.py"
+        },
+        {
+          "id": "ch3q03",
+          "text": "どうすれば顧客に「有意差」を感じさせられるか",
+          "status": "completed",
+          "completed_at": "2026-04-03T23:10:00+09:00",
+          "script_file": "mba_mm_porter23_ch3q03_verified.py"
+        },
+        {
+          "id": "ch3q04",
+          "text": "どうすれば「突き抜けること」ができて、有意差を実現できるのか",
+          "status": "not_started",
+          "completed_at": null
+        },
+        {
+          "id": "ch3q05",
+          "text": "どうすれば「今までにない」競争軸で、有意差を実現できるのか",
+          "status": "not_started",
+          "completed_at": null
+        },
+        {
+          "id": "ch3q06",
+          "text": "捨てる勇気を持ち、重要な競争軸を「取り除く」ことができるか",
+          "status": "not_started",
+          "completed_at": null
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "title": "簡単に真似されない差別化を実現できるか",
+      "deck_suffix": "Ch4_持続的差別化",
+      "questions": [
+        {
+          "id": "ch4q01",
+          "text": "なぜ日本企業の差別化の賞味期間は短いのか。どうすれば賞味期間をもっと長くできるのか",
+          "status": "not_started",
+          "completed_at": null
+        },
+        {
+          "id": "ch4q02",
+          "text": "なぜベストプラクティスを真似することは非常に難しいのか",
+          "status": "not_started",
+          "completed_at": null
+        },
+        {
+          "id": "ch4q03",
+          "text": "どうすればビジネスモデルでの差別化が機能するようになるのか",
+          "status": "not_started",
+          "completed_at": null
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "title": "次から次へと差別化を実現できるか",
+      "deck_suffix": "Ch5_連続的差別化",
+      "questions": [
+        {
+          "id": "ch5q01",
+          "text": "次から次へと差別化を実現するために、社長や事業担当リーダーは、企画会議で戦略立案担当者をどうサポートするべきか",
+          "status": "not_started",
+          "completed_at": null
+        },
+        {
+          "id": "ch5q02",
+          "text": "どうすれば、差別化の失敗を許容・評価できるようになるのか",
+          "status": "not_started",
+          "completed_at": null
+        },
+        {
+          "id": "ch5q03",
+          "text": "差別化に失敗したときに、早く撤退し傷を浅くするにはどうすればいいのか",
+          "status": "not_started",
+          "completed_at": null
+        },
+        {
+          "id": "ch5q04",
+          "text": "次から次へと差別化を実現するために、マーケティング部門と製品開発部門は、どう連携していけばよいのか",
+          "status": "not_started",
+          "completed_at": null
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "title": "プロフェッショナルの戦略立案担当者になれるか",
+      "deck_suffix": "Ch6_プロフェッショナル",
+      "questions": [
+        {
+          "id": "ch6q01",
+          "text": "機能する差別化を実現する際に、最初から最後まで気をつけなければならない一番重要なポイントはなにか",
+          "status": "not_started",
+          "completed_at": null
+        },
+        {
+          "id": "ch6q02",
+          "text": "どうすれば差別化構想力を身につけ、機能する差別化を発想できるようになるのか",
+          "status": "not_started",
+          "completed_at": null
+        }
+      ]
+    }
+  ]
+}

@@ -57,11 +57,14 @@ def show_weekly_review():
         'subject_hours': {}
     }
 
-    # 科目別集計
+    # 科目別集計（study_sessionsから）
     for record in period_records:
-        if record.shindan_time > 0 and record.shindan_subject:
-            subject = record.shindan_subject
-            weekly_stats['subject_hours'][subject] = weekly_stats['subject_hours'].get(subject, 0) + record.shindan_time
+        if record.id:
+            sessions = db_service.get_study_sessions(record.id)
+            for session in sessions:
+                if session.qualification in ('shindan_1ji', 'shindan_2ji') and session.time_hours > 0:
+                    subject = session.subject
+                    weekly_stats['subject_hours'][subject] = weekly_stats['subject_hours'].get(subject, 0) + session.time_hours
 
     # サマリーカード
     st.markdown("### 📊 週間サマリー")
@@ -103,7 +106,7 @@ def show_weekly_review():
             })
 
         df = pd.DataFrame(subject_data)
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width="stretch", hide_index=True)
 
         # 棒グラフ
         chart_data = pd.DataFrame({
@@ -116,7 +119,7 @@ def show_weekly_review():
     st.markdown("---")
     st.markdown("### 🐦 週次投稿文を生成")
 
-    if st.button("📱 週次投稿文を生成", key="generate_weekly_tweet", type="primary", use_container_width=True):
+    if st.button("📱 週次投稿文を生成", key="generate_weekly_tweet", type="primary", width="stretch"):
         # フェーズを取得（最新の記録から）
         records = db_service.get_recent_records(limit=1)
         phase = records[0].phase if records else "基礎固め期"
@@ -142,9 +145,9 @@ def show_weekly_review():
         col1, col2 = st.columns(2)
         with col1:
             tweet_url = f"https://x.com/intent/tweet?text={quote(tweet_text)}"
-            st.link_button("🐦 Xで投稿", tweet_url, use_container_width=True)
+            st.link_button("🐦 Xで投稿", tweet_url, width="stretch")
         with col2:
-            if st.button("📋 コピー", key="copy_weekly_tweet", use_container_width=True):
+            if st.button("📋 コピー", key="copy_weekly_tweet", width="stretch"):
                 try:
                     pyperclip.copy(tweet_text)
                     st.toast("✅ コピーしました！", icon="✅")
@@ -261,7 +264,7 @@ def show_monthly_review():
         col_table, col_chart = st.columns([1, 1])
 
         with col_table:
-            st.dataframe(df, use_container_width=True, hide_index=True)
+            st.dataframe(df, width="stretch", hide_index=True)
 
         with col_chart:
             # 棒グラフ
@@ -275,7 +278,7 @@ def show_monthly_review():
     st.markdown("---")
     st.markdown("### 🐦 月次投稿文を生成")
 
-    if st.button("📱 月次投稿文を生成", key="generate_monthly_tweet", type="primary", use_container_width=True):
+    if st.button("📱 月次投稿文を生成", key="generate_monthly_tweet", type="primary", width="stretch"):
         # フェーズを取得
         records = db_service.get_recent_records(limit=1)
         phase = records[0].phase if records else "基礎固め期"
@@ -304,9 +307,9 @@ def show_monthly_review():
         col1, col2 = st.columns(2)
         with col1:
             tweet_url = f"https://x.com/intent/tweet?text={quote(tweet_text)}"
-            st.link_button("🐦 Xで投稿", tweet_url, use_container_width=True)
+            st.link_button("🐦 Xで投稿", tweet_url, width="stretch")
         with col2:
-            if st.button("📋 コピー", key="copy_monthly_tweet", use_container_width=True):
+            if st.button("📋 コピー", key="copy_monthly_tweet", width="stretch"):
                 try:
                     pyperclip.copy(tweet_text)
                     st.toast("✅ コピーしました！", icon="✅")
